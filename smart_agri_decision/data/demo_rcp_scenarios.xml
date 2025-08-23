@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ======================================== -->
+        <!-- SCÉNARIOS RCP IPCC DE DÉMONSTRATION -->
+        <!-- ======================================== -->
+        
+        <!-- Scénario RCP 2.6 - Optimiste -->
+        <record id="demo_rcp_26" model="rcp.scenario">
+            <field name="name">RCP 2.6 - Optimiste</field>
+            <field name="description">Scénario de stabilisation avec émissions très faibles. Stabilisation de la température à +1°C d'ici 2100. Ce scénario suppose une action climatique ambitieuse et immédiate.</field>
+            <field name="rcp_type">rcp_26</field>
+            <field name="exploitation_id" ref="demo_exploitation_soleil"/>
+            <field name="annee_debut">2020</field>
+            <field name="annee_fin">2100</field>
+            <field name="temperature_rise">1.0</field>
+            <field name="co2_concentration">421</field>
+            <field name="precipitation_change">-5</field>
+            <field name="stress_hydrique_rcp">0.1</field>
+            <field name="stress_thermique_rcp">0.05</field>
+            <field name="rendement_change">-2.5</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Scénario RCP 4.5 - Intermédiaire -->
+        <record id="demo_rcp_45" model="rcp.scenario">
+            <field name="name">RCP 4.5 - Intermédiaire</field>
+            <field name="description">Scénario de stabilisation modérée. Stabilisation de la température à +1.8°C d'ici 2100. Ce scénario suppose des politiques climatiques modérées.</field>
+            <field name="rcp_type">rcp_45</field>
+            <field name="exploitation_id" ref="demo_exploitation_soleil"/>
+            <field name="annee_debut">2020</field>
+            <field name="annee_fin">2100</field>
+            <field name="temperature_rise">1.8</field>
+            <field name="co2_concentration">538</field>
+            <field name="precipitation_change">-8</field>
+            <field name="stress_hydrique_rcp">0.15</field>
+            <field name="stress_thermique_rcp">0.12</field>
+            <field name="rendement_change">-5.0</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Scénario RCP 6.0 - Élevé -->
+        <record id="demo_rcp_60" model="rcp.scenario">
+            <field name="name">RCP 6.0 - Élevé</field>
+            <field name="description">Scénario avec émissions élevées. Augmentation de la température à +2.2°C d'ici 2100. Ce scénario suppose des politiques climatiques insuffisantes.</field>
+            <field name="rcp_type">rcp_60</field>
+            <field name="exploitation_id" ref="demo_exploitation_soleil"/>
+            <field name="annee_debut">2020</field>
+            <field name="annee_fin">2100</field>
+            <field name="temperature_rise">2.2</field>
+            <field name="co2_concentration">670</field>
+            <field name="precipitation_change">-12</field>
+            <field name="stress_hydrique_rcp">0.25</field>
+            <field name="stress_thermique_rcp">0.20</field>
+            <field name="rendement_change">-8.5</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Scénario RCP 8.5 - Pessimiste -->
+        <record id="demo_rcp_85" model="rcp.scenario">
+            <field name="name">RCP 8.5 - Pessimiste</field>
+            <field name="description">Scénario avec émissions très élevées. Augmentation de la température à +3.7°C d'ici 2100. Ce scénario suppose l'absence de politiques climatiques.</field>
+            <field name="rcp_type">rcp_85</field>
+            <field name="exploitation_id" ref="demo_exploitation_soleil"/>
+            <field name="annee_debut">2020</field>
+            <field name="annee_fin">2100</field>
+            <field name="temperature_rise">3.7</field>
+            <field name="co2_concentration">936</field>
+            <field name="precipitation_change">-20</field>
+            <field name="stress_hydrique_rcp">0.40</field>
+            <field name="stress_thermique_rcp">0.35</field>
+            <field name="rendement_change">-15.0</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- ======================================== -->
+        <!-- DONNÉES ANNUELLES RCP DE DÉMONSTRATION -->
+        <!-- ======================================== -->
+        
+        <!-- Données annuelles pour RCP 2.6 (exemples pour quelques années) -->
+        <record id="demo_rcp_26_2025" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_26"/>
+            <field name="annee">2025</field>
+            <field name="temperature_moyenne">15.1</field>
+            <field name="precipitation_totale">760</field>
+            <field name="stress_hydrique">0.02</field>
+            <field name="stress_thermique">0.01</field>
+            <field name="rendement_projete">99.5</field>
+        </record>
+
+        <record id="demo_rcp_26_2030" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_26"/>
+            <field name="annee">2030</field>
+            <field name="temperature_moyenne">15.2</field>
+            <field name="precipitation_totale">750</field>
+            <field name="stress_hydrique">0.03</field>
+            <field name="stress_thermique">0.02</field>
+            <field name="rendement_projete">99.0</field>
+        </record>
+
+        <record id="demo_rcp_26_2050" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_26"/>
+            <field name="annee">2050</field>
+            <field name="temperature_moyenne">15.5</field>
+            <field name="precipitation_totale">730</field>
+            <field name="stress_hydrique">0.05</field>
+            <field name="stress_thermique">0.03</field>
+            <field name="rendement_projete">98.0</field>
+        </record>
+
+        <!-- Données annuelles pour RCP 4.5 (exemples pour quelques années) -->
+        <record id="demo_rcp_45_2025" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_45"/>
+            <field name="annee">2025</field>
+            <field name="temperature_moyenne">15.2</field>
+            <field name="precipitation_totale">750</field>
+            <field name="stress_hydrique">0.03</field>
+            <field name="stress_thermique">0.02</field>
+            <field name="rendement_projete">99.0</field>
+        </record>
+
+        <record id="demo_rcp_45_2030" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_45"/>
+            <field name="annee">2030</field>
+            <field name="temperature_moyenne">15.4</field>
+            <field name="precipitation_totale">740</field>
+            <field name="stress_hydrique">0.04</field>
+            <field name="stress_thermique">0.03</field>
+            <field name="rendement_projete">98.5</field>
+        </record>
+
+        <record id="demo_rcp_45_2050" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_45"/>
+            <field name="annee">2050</field>
+            <field name="temperature_moyenne">16.0</field>
+            <field name="precipitation_totale">710</field>
+            <field name="stress_hydrique">0.07</field>
+            <field name="stress_thermique">0.06</field>
+            <field name="rendement_projete">97.0</field>
+        </record>
+
+        <!-- Données annuelles pour RCP 6.0 (exemples pour quelques années) -->
+        <record id="demo_rcp_60_2025" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_60"/>
+            <field name="annee">2025</field>
+            <field name="temperature_moyenne">15.3</field>
+            <field name="precipitation_totale">740</field>
+            <field name="stress_hydrique">0.04</field>
+            <field name="stress_thermique">0.03</field>
+            <field name="rendement_projete">98.5</field>
+        </record>
+
+        <record id="demo_rcp_60_2030" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_60"/>
+            <field name="annee">2030</field>
+            <field name="temperature_moyenne">15.6</field>
+            <field name="precipitation_totale">730</field>
+            <field name="stress_hydrique">0.06</field>
+            <field name="stress_thermique">0.05</field>
+            <field name="rendement_projete">97.5</field>
+        </record>
+
+        <record id="demo_rcp_60_2050" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_60"/>
+            <field name="annee">2050</field>
+            <field name="temperature_moyenne">16.5</field>
+            <field name="precipitation_totale">690</field>
+            <field name="stress_hydrique">0.12</field>
+            <field name="stress_thermique">0.10</field>
+            <field name="rendement_projete">95.0</field>
+        </record>
+
+        <!-- Données annuelles pour RCP 8.5 (exemples pour quelques années) -->
+        <record id="demo_rcp_85_2025" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_85"/>
+            <field name="annee">2025</field>
+            <field name="temperature_moyenne">15.4</field>
+            <field name="precipitation_totale">730</field>
+            <field name="stress_hydrique">0.06</field>
+            <field name="stress_thermique">0.05</field>
+            <field name="rendement_projete">98.0</field>
+        </record>
+
+        <record id="demo_rcp_85_2030" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_85"/>
+            <field name="annee">2030</field>
+            <field name="temperature_moyenne">15.8</field>
+            <field name="precipitation_totale">720</field>
+            <field name="stress_hydrique">0.08</field>
+            <field name="stress_thermique">0.07</field>
+            <field name="rendement_projete">97.0</field>
+        </record>
+
+        <record id="demo_rcp_85_2050" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_85"/>
+            <field name="annee">2050</field>
+            <field name="temperature_moyenne">17.2</field>
+            <field name="precipitation_totale">670</field>
+            <field name="stress_hydrique">0.20</field>
+            <field name="stress_thermique">0.18</field>
+            <field name="rendement_projete">92.0</field>
+        </record>
+    </data>
+</odoo>

@@ -19,9 +19,9 @@ class RCPScenario(models.Model):
         ('rcp_85', 'RCP 8.5 (Pessimiste)')
     ], string="Type RCP", required=True, default='rcp_45')
     
-    # Relations
-    exploitation_id = fields.Many2one('exploitation.agri', string="Exploitation", required=True)
-    parcelle_id = fields.Many2one('parcelle.agri', string="Parcelle")
+    # Relations (optionnelles pour les scénarios RCP)
+    exploitation_id = fields.Many2one('exploitation.agri', string="Exploitation de référence", required=False, help="Exploitation optionnelle pour l'analyse locale")
+    parcelle_id = fields.Many2one('parcelle.agri', string="Parcelle de référence", help="Parcelle optionnelle pour l'analyse locale")
     
     # Période d'étude
     annee_debut = fields.Integer(string="Année de début", required=True, default=2020)
@@ -117,29 +117,44 @@ class RCPScenario(models.Model):
             self.temperature_rise = rcp_params.get('temperature_rise', 0)
             self.co2_concentration = rcp_params.get('co2_concentration', 0)
             self.precipitation_change = rcp_params.get('precipitation_change', 0)
+            self.stress_hydrique_rcp = rcp_params.get('stress_hydrique_rcp', 0)
+            self.stress_thermique_rcp = rcp_params.get('stress_thermique_rcp', 0)
+            self.rendement_change = rcp_params.get('rendement_change', 0)
     
     def _get_rcp_parameters(self):
         """Retourne les paramètres par défaut selon le type RCP"""
         params = {
             'rcp_26': {
-                'temperature_rise': 1.6,
+                'temperature_rise': 1.0,
                 'co2_concentration': 421,
-                'precipitation_change': 5.0
+                'precipitation_change': -5,
+                'stress_hydrique_rcp': 0.1,
+                'stress_thermique_rcp': 0.05,
+                'rendement_change': -2.5
             },
             'rcp_45': {
-                'temperature_rise': 2.4,
+                'temperature_rise': 1.8,
                 'co2_concentration': 538,
-                'precipitation_change': 2.5
+                'precipitation_change': -8,
+                'stress_hydrique_rcp': 0.15,
+                'stress_thermique_rcp': 0.12,
+                'rendement_change': -5.0
             },
             'rcp_60': {
-                'temperature_rise': 3.0,
+                'temperature_rise': 2.2,
                 'co2_concentration': 670,
-                'precipitation_change': 0.0
+                'precipitation_change': -12,
+                'stress_hydrique_rcp': 0.25,
+                'stress_thermique_rcp': 0.20,
+                'rendement_change': -8.5
             },
             'rcp_85': {
-                'temperature_rise': 4.3,
+                'temperature_rise': 3.7,
                 'co2_concentration': 936,
-                'precipitation_change': -2.5
+                'precipitation_change': -20,
+                'stress_hydrique_rcp': 0.40,
+                'stress_thermique_rcp': 0.35,
+                'rendement_change': -15.0
             }
         }
         return params.get(self.rcp_type, {})
@@ -249,6 +264,175 @@ class RCPScenario(models.Model):
         self.rendement_change = impact_temp + impact_hydrique
         
         return True
+
+    def generer_scenarios_rcp_standard(self):
+        """Génère automatiquement les 4 scénarios RCP IPCC standard"""
+        # Vérifier s'il existe déjà des scénarios
+        scenarios_existants = self.search([])
+        if scenarios_existants:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Scénarios déjà existants',
+                    'message': f'{len(scenarios_existants)} scénarios RCP sont déjà disponibles.',
+                    'type': 'info',
+                }
+            }
+        
+        # Créer les scénarios RCP standard
+        rcp_scenarios = [
+            {
+                'name': 'RCP 2.6 - Optimiste',
+                'description': 'Scénario de stabilisation avec émissions très faibles. Stabilisation de la température à +1°C d\'ici 2100.',
+                'rcp_type': 'rcp_26',
+                'annee_debut': 2020,
+                'annee_fin': 2100,
+                'temperature_rise': 1.0,
+                'co2_concentration': 421,
+                'precipitation_change': -5,
+                'stress_hydrique_rcp': 0.1,
+                'stress_thermique_rcp': 0.05,
+                'rendement_change': -2.5
+            },
+            {
+                'name': 'RCP 4.5 - Intermédiaire',
+                'description': 'Scénario de stabilisation modérée. Stabilisation de la température à +1.8°C d\'ici 2100.',
+                'rcp_type': 'rcp_45',
+                'annee_debut': 2020,
+                'annee_fin': 2100,
+                'temperature_rise': 1.8,
+                'co2_concentration': 538,
+                'precipitation_change': -8,
+                'stress_hydrique_rcp': 0.15,
+                'stress_thermique_rcp': 0.12,
+                'rendement_change': -5.0
+            },
+            {
+                'name': 'RCP 6.0 - Élevé',
+                'description': 'Scénario avec émissions élevées. Augmentation de la température à +2.2°C d\'ici 2100.',
+                'rcp_type': 'rcp_60',
+                'annee_debut': 2020,
+                'annee_fin': 2100,
+                'temperature_rise': 2.2,
+                'co2_concentration': 670,
+                'precipitation_change': -12,
+                'stress_hydrique_rcp': 0.25,
+                'stress_thermique_rcp': 0.20,
+                'rendement_change': -8.5
+            },
+            {
+                'name': 'RCP 8.5 - Pessimiste',
+                'description': 'Scénario avec émissions très élevées. Augmentation de la température à +3.7°C d\'ici 2100.',
+                'rcp_type': 'rcp_85',
+                'annee_debut': 2020,
+                'annee_fin': 2100,
+                'temperature_rise': 3.7,
+                'co2_concentration': 936,
+                'precipitation_change': -20,
+                'stress_hydrique_rcp': 0.40,
+                'stress_thermique_rcp': 0.35,
+                'rendement_change': -15.0
+            }
+        ]
+        
+        # Créer les scénarios
+        scenarios_crees = []
+        for rcp_data in rcp_scenarios:
+            # Les scénarios RCP sont des projections climatiques GLOBALES
+            # Pas besoin de les lier à une exploitation spécifique
+            scenario = self.create(rcp_data)
+            scenarios_crees.append(scenario)
+            
+            # Générer les données annuelles pour ce scénario
+            scenario.generer_donnees_annuelles()
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Scénarios RCP générés !',
+                'message': f'4 scénarios RCP IPCC ont été créés avec leurs données annuelles jusqu\'en 2100.',
+                'type': 'success',
+            }
+        }
+
+    def action_analyser_scenarios(self):
+        """Analyse et compare les scénarios RCP actifs"""
+        self.ensure_one()
+        scenarios_actifs = self.search([('state', '=', 'active')])
+        
+        if not scenarios_actifs:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Aucun scénario actif',
+                    'message': 'Aucun scénario RCP n\'est actuellement actif.',
+                    'type': 'warning',
+                }
+            }
+        
+        # Calculer les statistiques comparatives
+        analyses = []
+        for scenario in scenarios_actifs:
+            analyse = {
+                'scenario': scenario.name,
+                'type_rcp': scenario.rcp_type,
+                'temperature_rise': scenario.temperature_rise,
+                'impact_rendement': scenario.rendement_change,
+                'stress_hydrique': scenario.stress_hydrique_rcp,
+                'stress_thermique': scenario.stress_thermique_rcp
+            }
+            analyses.append(analyse)
+        
+        # Afficher l'analyse
+        message = "Analyse comparative des scénarios RCP actifs:\n\n"
+        for analyse in analyses:
+            message += f"• {analyse['scenario']} ({analyse['type_rcp']}):\n"
+            message += f"  - Élévation température: +{analyse['temperature_rise']}°C\n"
+            message += f"  - Impact rendement: {analyse['impact_rendement']}%\n"
+            message += f"  - Stress hydrique: {analyse['stress_hydrique']:.2f}\n"
+            message += f"  - Stress thermique: {analyse['stress_thermique']:.2f}\n\n"
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Analyse des Scénarios RCP',
+                'message': message,
+                'type': 'info',
+                'sticky': True,
+            }
+        }
+
+    def action_exporter_analyse(self):
+        """Exporte l'analyse des scénarios RCP en PDF"""
+        self.ensure_one()
+        # Ici on pourrait implémenter la génération de PDF
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Export PDF',
+                'message': 'Fonctionnalité d\'export PDF en cours de développement.',
+                'type': 'info',
+            }
+        }
+
+    def action_generer_rapport_complet(self):
+        """Génère un rapport PDF complet d'analyse des scénarios RCP"""
+        self.ensure_one()
+        # Ici on pourrait implémenter la génération de rapport PDF complet
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Rapport Complet',
+                'message': 'Fonctionnalité de rapport PDF complet en cours de développement.',
+                'type': 'info',
+            }
+        }
 
 
 class RCPDonneeAnnuelle(models.Model):

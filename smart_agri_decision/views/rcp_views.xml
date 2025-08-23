@@ -14,8 +14,58 @@
                     <field name="temperature_rise" widget="float_time" options="{'factor': 1}"/>
                     <field name="co2_concentration"/>
                     <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'active'" decoration-warning="state == 'archived'"/>
-                    <field name="exploitation_id"/>
+                    <!-- Champ exploitation_id masqué - les scénarios RCP sont des projections climatiques globales -->
                 </tree>
+            </field>
+        </record>
+
+        <!-- Vue kanban pour les scénarios RCP avec bouton de génération -->
+        <record id="view_rcp_scenario_kanban" model="ir.ui.view">
+            <field name="name">rcp.scenario.kanban</field>
+            <field name="model">rcp.scenario</field>
+            <field name="arch" type="xml">
+                <kanban string="Scénarios RCP IPCC" class="o_kanban_mobile" sample="1">
+                    <field name="name"/>
+                    <field name="rcp_type"/>
+                    <field name="annee_debut"/>
+                    <field name="annee_fin"/>
+                    <field name="state"/>
+                    <!-- Champ exploitation_id masqué - les scénarios RCP sont des projections climatiques globales -->
+                    
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_top_right">
+                                            <field name="state" widget="label_selection" options="{'classes': {'draft': 'info', 'active': 'success', 'archived': 'warning'}}"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <strong>Type:</strong> <field name="rcp_type"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <strong>Période:</strong> <field name="annee_debut"/>-<field name="annee_fin"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-12">
+                                                <strong>Impact:</strong> <field name="rendement_change"/>% sur les rendements
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
             </field>
         </record>
 
@@ -46,8 +96,8 @@
                             <group string="Informations générales">
                                 <field name="rcp_type"/>
                                 <field name="description"/>
-                                <field name="exploitation_id"/>
-                                <field name="parcelle_id"/>
+                                <!-- Champ exploitation_id masqué - les scénarios RCP sont des projections climatiques globales -->
+                                <!-- Champ parcelle_id masqué - les scénarios RCP sont des projections climatiques globales -->
                             </group>
                             
                             <group string="Période d'étude">
@@ -163,8 +213,8 @@
                 <search string="Recherche Scénarios RCP">
                     <field name="name"/>
                     <field name="rcp_type"/>
-                    <field name="exploitation_id"/>
-                    <field name="parcelle_id"/>
+                    <!-- Champ exploitation_id masqué dans la recherche -->
+                    <!-- Champ parcelle_id masqué dans la recherche -->
                     
                     <filter string="RCP 2.6 (Optimiste)" name="rcp_26" domain="[('rcp_type', '=', 'rcp_26')]"/>
                     <filter string="RCP 4.5 (Intermédiaire)" name="rcp_45" domain="[('rcp_type', '=', 'rcp_45')]"/>
@@ -179,7 +229,7 @@
                     
                     <group expand="0" string="Regrouper par">
                         <filter string="Type RCP" name="group_rcp_type" context="{'group_by': 'rcp_type'}"/>
-                        <filter string="Exploitation" name="group_exploitation" context="{'group_by': 'exploitation_id'}"/>
+                        <!-- Champ exploitation_id masqué dans le groupement -->
                         <filter string="État" name="group_state" context="{'group_by': 'state'}"/>
                         <filter string="Année de début" name="group_annee_debut" context="{'group_by': 'annee_debut'}"/>
                     </group>
@@ -227,6 +277,130 @@
                 <p class="o_view_nocontent_smiling_face">
                     Analysez l'impact des scénarios climatiques sur vos exploitations
                 </p>
+            </field>
+        </record>
+
+        <!-- Vue spéciale pour la génération et analyse des scénarios RCP -->
+        <record id="view_rcp_scenario_generation" model="ir.ui.view">
+            <field name="name">rcp.scenario.generation</field>
+            <field name="model">rcp.scenario</field>
+            <field name="arch" type="xml">
+                <form string="Génération et Analyse des Scénarios RCP IPCC">
+                    <header>
+                        <button name="%(action_generer_scenarios_rcp)d" type="action" string="🚀 Générer Scénarios RCP IPCC" 
+                                class="btn-primary" help="Générer automatiquement les 4 scénarios RCP standard avec leurs données"/>
+                        <button name="action_analyser_scenarios" type="object" string="📊 Analyser Scénarios" 
+                                class="btn-secondary" help="Analyser et comparer les scénarios générés"/>
+                        <button name="action_exporter_analyse" type="object" string="📤 Exporter Analyse" 
+                                class="btn-info" help="Exporter l'analyse en PDF"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>🌍 Gestion des Scénarios RCP IPCC</h1>
+                            <p class="text-muted">
+                                Les scénarios RCP (Representative Concentration Pathways) modélisent l'évolution du climat 
+                                selon différents niveaux d'émissions de gaz à effet de serre jusqu'en 2100.
+                            </p>
+                        </div>
+                        
+                        <group>
+                            <group string="📊 Statut des Scénarios">
+                                <field name="scenarios_rcp_count" readonly="1"/>
+                                <field name="scenarios_actifs_count" readonly="1"/>
+                                <field name="derniere_generation" readonly="1"/>
+                            </group>
+                            
+                            <group string="🔬 Types de Scénarios">
+                                <field name="rcp_26_status" readonly="1"/>
+                                <field name="rcp_45_status" readonly="1"/>
+                                <field name="rcp_60_status" readonly="1"/>
+                                <field name="rcp_85_status" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="🚀 Génération Automatique" name="generation_automatique">
+                                <div class="alert alert-info">
+                                    <h4>Génération des Scénarios RCP IPCC</h4>
+                                    <p>Cette fonction génère automatiquement les 4 scénarios RCP standard :</p>
+                                    <ul>
+                                        <li><strong>RCP 2.6</strong> : Scénario optimiste (stabilisation à +1°C)</li>
+                                        <li><strong>RCP 4.5</strong> : Scénario intermédiaire (stabilisation à +1.8°C)</li>
+                                        <li><strong>RCP 6.0</strong> : Scénario élevé (augmentation à +2.2°C)</li>
+                                        <li><strong>RCP 8.5</strong> : Scénario pessimiste (augmentation à +3.7°C)</li>
+                                    </ul>
+                                    <p>Chaque scénario inclut des projections annuelles jusqu'en 2100 pour :</p>
+                                    <ul>
+                                        <li>Température moyenne</li>
+                                        <li>Précipitations totales</li>
+                                        <li>Concentration de CO2</li>
+                                        <li>Humidité relative</li>
+                                        <li>Ensoleillement</li>
+                                        <li>Vitesse du vent</li>
+                                    </ul>
+                                </div>
+                                
+                                <group>
+                                    <button name="%(action_generer_scenarios_rcp)d" type="action" 
+                                            string="🚀 Générer Tous les Scénarios RCP IPCC" 
+                                            class="btn-primary btn-lg" 
+                                            help="Cliquez pour générer automatiquement tous les scénarios RCP IPCC"/>
+                                </group>
+                            </page>
+                            
+                            <page string="📊 Analyse Comparative" name="analyse_comparative">
+                                <field name="scenarios_actifs_ids" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="rcp_type"/>
+                                        <field name="annee_debut"/>
+                                        <field name="annee_fin"/>
+                                        <field name="temperature_rise"/>
+                                        <field name="co2_concentration"/>
+                                        <field name="stress_hydrique_rcp"/>
+                                        <field name="stress_thermique_rcp"/>
+                                        <field name="rendement_change"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            
+                            <page string="📈 Graphiques d'Analyse" name="graphiques_analyse">
+                                <group>
+                                    <group string="Évolution des Températures">
+                                        <field name="graphique_evolution_temperature" widget="image" readonly="1"/>
+                                    </group>
+                                    <group string="Évolution des Précipitations">
+                                        <field name="graphique_evolution_precipitation" widget="image" readonly="1"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Impact sur les Rendements">
+                                        <field name="graphique_impact_rendements" widget="image" readonly="1"/>
+                                    </group>
+                                    <group string="Stress Climatiques">
+                                        <field name="graphique_stress_climatiques" widget="image" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="📋 Rapports d'Analyse" name="rapports_analyse">
+                                <group>
+                                    <field name="rapport_analyse_rcp" readonly="1"/>
+                                    <field name="recommandations_adaptation" readonly="1"/>
+                                    <field name="strategies_mitigation" readonly="1"/>
+                                </group>
+                                
+                                <group>
+                                    <button name="action_generer_rapport_complet" type="object" 
+                                            string="📊 Générer Rapport Complet" 
+                                            class="btn-success" 
+                                            help="Générer un rapport PDF complet d'analyse des scénarios RCP"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
             </field>
         </record>
     </data>

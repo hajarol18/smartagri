@@ -136,7 +136,7 @@
         </record>
 
         <!-- Actions pour les données annuelles RCP -->
-        <record id="action_rcp_donnee_annuelle" model="ir.actions.act_window">
+        <record id="action_rcp_donnees_annuelles" model="ir.actions.act_window">
             <field name="name">Données Annuelles RCP</field>
             <field name="res_model">rcp.donnee.annuelle</field>
             <field name="view_mode">tree,form,graph</field>
@@ -164,6 +164,69 @@
                     Les rapports de tableau de bord permettent de générer des documents 
                     PDF, Excel ou CSV pour l'analyse et le partage.
                 </p>
+            </field>
+        </record>
+
+        <!-- Actions pour la génération automatique de scénarios RCP -->
+        <record id="action_generer_scenarios_rcp" model="ir.actions.server">
+            <field name="name">Générer Scénarios RCP IPCC</field>
+            <field name="model_id" ref="model_rcp_scenario"/>
+            <field name="state">code</field>
+            <field name="code">
+                # Génération automatique des scénarios RCP IPCC
+                scenarios = model.search([])
+                if not scenarios:
+                    # Créer les scénarios RCP standard
+                    rcp_scenarios = [
+                        {'nom': 'RCP 2.6 - Optimiste', 'description': 'Scénario de stabilisation avec émissions très faibles', 'type_emission': 'faible', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 421, 'augmentation_temperature': 1.0},
+                        {'nom': 'RCP 4.5 - Intermédiaire', 'description': 'Scénario de stabilisation modérée', 'type_emission': 'moderee', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 538, 'augmentation_temperature': 1.8},
+                        {'nom': 'RCP 6.0 - Élevé', 'description': 'Scénario avec émissions élevées', 'type_emission': 'elevee', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 670, 'augmentation_temperature': 2.2},
+                        {'nom': 'RCP 8.5 - Pessimiste', 'description': 'Scénario avec émissions très élevées', 'type_emission': 'tres_elevee', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 936, 'augmentation_temperature': 3.7}
+                    ]
+                    
+                    for rcp_data in rcp_scenarios:
+                        scenario = model.create(rcp_data)
+                        # Générer des données annuelles pour chaque scénario
+                        for annee in range(rcp_data['annee_debut'], rcp_data['annee_fin'] + 1):
+                            facteur_annee = (annee - rcp_data['annee_debut']) / (rcp_data['annee_fin'] - rcp_data['annee_debut'])
+                            temperature = 15 + (rcp_data['augmentation_temperature'] * facteur_annee)
+                            precipitation = 800 + (100 * facteur_annee * (1 if rcp_data['type_emission'] in ['elevee', 'tres_elevee'] else -0.5))
+                            co2 = rcp_data['concentration_co2'] + (facteur_annee * 100)
+                            
+                            model.env['rcp.donnee.annuelle'].create({
+                                'scenario_id': scenario.id,
+                                'annee': annee,
+                                'temperature_moyenne': temperature,
+                                'precipitation_totale': precipitation,
+                                'concentration_co2': co2,
+                                'humidite_relative': 70 - (facteur_annee * 10),
+                                'ensoleillement': 2000 + (facteur_annee * 200),
+                                'vitesse_vent': 15 + (facteur_annee * 5)
+                            })
+                    
+                    action = {
+                        'type': 'ir.actions.client',
+                        'tag': 'display_notification',
+                        'params': {
+                            'title': 'Scénarios RCP générés !',
+                            'message': f'4 scénarios RCP IPCC ont été créés avec leurs données annuelles jusqu\'en 2100.',
+                            'type': 'success',
+                            'sticky': False,
+                        }
+                    }
+                else:
+                    action = {
+                        'type': 'ir.actions.client',
+                        'tag': 'display_notification',
+                        'params': {
+                            'title': 'Scénarios déjà existants',
+                            'message': f'{len(scenarios)} scénarios RCP sont déjà disponibles.',
+                            'type': 'info',
+                            'sticky': False,
+                        }
+                    }
+                
+                return action
             </field>
         </record>
     </data>

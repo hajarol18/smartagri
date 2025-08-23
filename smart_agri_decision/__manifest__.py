@@ -24,8 +24,9 @@
         # 4. Enfin les menus (après que toutes les actions soient définies)
         'views/main_menu.xml',
         # 5. Données de démonstration en dernier
-        'data/demo_data.xml',
-        'data/demo_parcelles.xml',
+                       'data/demo_data.xml',
+               'data/demo_parcelles.xml',
+               'data/demo_rcp_scenarios.xml',
     ],
     'assets': {
         'web.assets_backend': [

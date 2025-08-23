@@ -3,45 +3,66 @@
     <!-- Menu principal Agriculture -->
     <menuitem id="menu_agriculture_root" name="Agriculture" sequence="10"/>
     
-    <!-- 1. Gestion des Cultures -->
-    <menuitem id="menu_cultures_main" name="🌱 Gestion des Cultures" parent="menu_agriculture_root" sequence="10"/>
-    <menuitem id="menu_cultures" name="📋 Cultures" parent="menu_cultures_main" action="action_culture_agri" sequence="10"/>
-    <menuitem id="menu_rotations" name="🔄 Rotations culturales" parent="menu_cultures_main" action="action_rotation_culturelle" sequence="20"/>
-    <menuitem id="menu_historique_rendements" name="📊 Historique des rendements" parent="menu_cultures_main" action="action_historique_rendements" sequence="30"/>
+    <!-- 2.1. Gestion des données agricoles -->
+    <menuitem id="menu_donnees_agricoles_main" name="🌱 Gestion des Données Agricoles" parent="menu_agriculture_root" sequence="10"/>
     
-    <!-- 2. Gestion des Exploitations -->
-    <menuitem id="menu_exploitations_main" name="🚜 Gestion des Exploitations" parent="menu_agriculture_root" sequence="20"/>
-    <menuitem id="menu_exploitations" name="🏡 Exploitations agricoles" parent="menu_exploitations_main" action="action_exploitation_agri" sequence="10"/>
-    <menuitem id="menu_parcelles" name="📍 Parcelles cultivées" parent="menu_exploitations_main" action="action_parcelle_agri" sequence="20"/>
-    <menuitem id="menu_parcelles_carte" name="🗺️ Créer Parcelle (Carte)" parent="menu_exploitations_main" action="action_parcelle_agri_map" sequence="25"/>
-    <menuitem id="menu_interventions" name="📅 Interventions agricoles" parent="menu_exploitations_main" action="action_intervention_agri" sequence="30"/>
-    <menuitem id="menu_intrants" name="💧 Intrants et ressources" parent="menu_exploitations_main" action="action_intrant_agri" sequence="40"/>
-    <menuitem id="menu_rendements" name="📈 Rendements enregistrés" parent="menu_exploitations_main" sequence="50"/>
+    <!-- Exploitations et parcelles -->
+    <menuitem id="menu_exploitations" name="🏡 Exploitations agricoles" parent="menu_donnees_agricoles_main" action="action_exploitation_agri" sequence="10"/>
+    <menuitem id="menu_parcelles" name="📍 Parcelles cultivées" parent="menu_donnees_agricoles_main" action="action_parcelle_agri" sequence="20"/>
+    <menuitem id="menu_parcelles_carte" name="🗺️ Créer Parcelle (Carte)" parent="menu_donnees_agricoles_main" action="action_parcelle_agri_map" sequence="25"/>
     
-    <!-- 3. Données Climatiques -->
-    <menuitem id="menu_climat_main" name="🌤️ Données Climatiques" parent="menu_agriculture_root" sequence="30"/>
+    <!-- Cultures et interventions -->
+    <menuitem id="menu_cultures" name="🌾 Cultures par saison" parent="menu_donnees_agricoles_main" action="action_culture_agri" sequence="30"/>
+    <menuitem id="menu_interventions" name="📅 Interventions agricoles" parent="menu_donnees_agricoles_main" action="action_intervention_agri" sequence="40"/>
+    <menuitem id="menu_intrants" name="💧 Intrants et ressources" parent="menu_donnees_agricoles_main" action="action_intrant_agri" sequence="50"/>
+    
+    <!-- 2.2. Intégration des données climatiques -->
+    <menuitem id="menu_climat_main" name="🌤️ Intégration Climatique" parent="menu_agriculture_root" sequence="20"/>
+    
+    <!-- Données météo et tendances -->
     <menuitem id="menu_meteo" name="☀️ Données météo" parent="menu_climat_main" action="action_meteo_data" sequence="10"/>
     <menuitem id="menu_tendances" name="🌡️ Tendances climatiques" parent="menu_climat_main" action="action_tendances_climatiques" sequence="20"/>
     <menuitem id="menu_alertes" name="🚨 Alertes climatiques" parent="menu_climat_main" action="action_alertes_meteo" sequence="30"/>
-    <menuitem id="menu_scenarios" name="🔬 Scénarios RCP" parent="menu_climat_main" action="action_rcp_scenarios" sequence="40"/>
     
-    <!-- 4. Intelligence Artificielle -->
-    <menuitem id="menu_ia_main" name="🤖 IA &amp; Aide à la décision" parent="menu_agriculture_root" sequence="40"/>
+    <!-- Scénarios RCP IPCC -->
+    <menuitem id="menu_scenarios_rcp" name="🔬 Scénarios RCP IPCC" parent="menu_climat_main" sequence="40"/>
+    <menuitem id="menu_rcp_generation" name="🚀 Génération Automatique" parent="menu_scenarios_rcp" action="action_generer_scenarios_rcp" sequence="5"/>
+    <menuitem id="menu_rcp_scenarios" name="📊 Scénarios climatiques" parent="menu_scenarios_rcp" action="action_rcp_scenarios" sequence="10"/>
+    <menuitem id="menu_rcp_donnees" name="📈 Données annuelles RCP" parent="menu_scenarios_rcp" action="action_rcp_donnees_annuelles" sequence="20"/>
+    <menuitem id="menu_rcp_analyse" name="📊 Analyse Comparative" parent="menu_scenarios_rcp" action="action_rcp_analysis" sequence="30"/>
+    
+    <!-- 2.3. Intelligence Artificielle & Aide à la décision -->
+    <menuitem id="menu_ia_main" name="🤖 IA &amp; Aide à la décision" parent="menu_agriculture_root" sequence="30"/>
+    
+    <!-- Modèles et prédictions IA -->
     <menuitem id="menu_ia_models" name="🧠 Modèles IA" parent="menu_ia_main" action="action_ia_models" sequence="10"/>
     <menuitem id="menu_ia_predictions" name="🔮 Prédictions IA" parent="menu_ia_main" action="action_ia_prediction" sequence="20"/>
-    <menuitem id="menu_prediction" name="📈 Prédiction de rendement" parent="menu_ia_main" action="action_culture_agri" sequence="30"/>
-    <menuitem id="menu_recommandations" name="✅ Recommandations optimales" parent="menu_ia_main" action="action_exploitation_agri" sequence="40"/>
-    <menuitem id="menu_stress" name="🚩 Détection des stress" parent="menu_ia_main" action="action_parcelle_agri" sequence="50"/>
-    <menuitem id="menu_simulation" name="🔮 Simulation de scénarios" parent="menu_ia_main" action="action_intervention_agri" sequence="60"/>
-    <menuitem id="menu_optimisation" name="♻️ Optimisation des ressources" parent="menu_ia_main" action="action_intrant_agri" sequence="70"/>
+    <menuitem id="menu_ia_entrainement" name="🎯 Historique d'entraînement" parent="menu_ia_main" action="action_ia_historique_entrainement" sequence="30"/>
+    <menuitem id="menu_ia_execution" name="⚡ Historique d'exécution" parent="menu_ia_main" action="action_ia_historique_execution" sequence="40"/>
     
-    <!-- 5. Tableaux de Bord -->
-    <menuitem id="menu_dashboard_main" name="📊 Tableaux de Bord" parent="menu_agriculture_root" sequence="50"/>
-    <menuitem id="menu_dashboard_meteo" name="🌤️ Dashboard Météo" parent="menu_dashboard_main" action="action_dashboard_meteo" sequence="10"/>
-    <menuitem id="menu_dashboard_agricole" name="🌾 Dashboard Agricole" parent="menu_dashboard_main" action="action_dashboard_agricole" sequence="20"/>
-    <menuitem id="menu_dashboard_general" name="📈 Tableaux de Bord Généraux" parent="menu_dashboard_main" action="action_dashboard_main" sequence="30"/>
-    <menuitem id="menu_carte" name="🗺️ Carte interactive" parent="menu_dashboard_main" action="action_parcelle_agri" sequence="40"/>
-    <menuitem id="menu_tableaux" name="📊 Tableaux dynamiques" parent="menu_dashboard_main" action="action_culture_agri" sequence="50"/>
-    <menuitem id="menu_rapports" name="🧾 Rapports PDF" parent="menu_dashboard_main" action="action_exploitation_agri" sequence="60"/>
-    <menuitem id="menu_suivi" name="🔎 Suivi global" parent="menu_dashboard_main" action="action_intervention_agri" sequence="70"/>
+    <!-- Simulation de scénarios agricoles -->
+    <menuitem id="menu_simulation_scenarios" name="🔮 Simulation de Scénarios" parent="menu_ia_main" sequence="50"/>
+    <menuitem id="menu_simulation_rendement" name="📈 Simulation rendement" parent="menu_simulation_scenarios" action="action_ia_prediction" sequence="10"/>
+    <menuitem id="menu_simulation_culture" name="🌾 Simulation culture optimale" parent="menu_simulation_scenarios" action="action_ia_prediction" sequence="20"/>
+    <menuitem id="menu_simulation_stress" name="🚩 Simulation stress climatique" parent="menu_simulation_scenarios" action="action_ia_prediction" sequence="30"/>
+    <menuitem id="menu_simulation_ressources" name="♻️ Simulation optimisation ressources" parent="menu_simulation_scenarios" action="action_ia_prediction" sequence="40"/>
+    
+    <!-- 2.4. Visualisation & Tableaux de bord -->
+    <menuitem id="menu_visualisation_main" name="📊 Visualisation &amp; Tableaux de Bord" parent="menu_agriculture_root" sequence="40"/>
+    
+    <!-- Carte interactive -->
+    <menuitem id="menu_carte_interactive" name="🗺️ Carte Interactive" parent="menu_visualisation_main" action="action_parcelle_agri_map" sequence="10"/>
+    
+    <!-- Tableaux de bord dynamiques -->
+    <menuitem id="menu_dashboards" name="📈 Tableaux Dynamiques" parent="menu_visualisation_main" sequence="20"/>
+    <menuitem id="menu_dashboard_meteo" name="🌤️ Dashboard Météo" parent="menu_dashboards" action="action_dashboard_meteo" sequence="10"/>
+    <menuitem id="menu_dashboard_agricole" name="🌾 Dashboard Agricole" parent="menu_dashboards" action="action_dashboard_agricole" sequence="20"/>
+    <menuitem id="menu_dashboard_general" name="📊 Dashboard Général" parent="menu_dashboards" action="action_dashboard_main" sequence="30"/>
+    
+    <!-- Rapports PDF -->
+    <menuitem id="menu_rapports" name="🧾 Rapports PDF" parent="menu_visualisation_main" sequence="30"/>
+    <menuitem id="menu_rapport_culture" name="🌾 Fiches culture" parent="menu_rapports" action="action_culture_agri" sequence="10"/>
+    <menuitem id="menu_rapport_recommandations" name="✅ Recommandations IA" parent="menu_rapports" action="action_ia_prediction" sequence="20"/>
+    <menuitem id="menu_rapport_alertes" name="🚨 Rapports d'alertes" parent="menu_rapports" action="action_meteo_data" sequence="30"/>
+    <menuitem id="menu_rapport_exploitation" name="🏡 Rapports d'exploitation" parent="menu_rapports" action="action_exploitation_agri" sequence="40"/>
 </odoo> 
