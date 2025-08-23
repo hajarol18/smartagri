@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue liste pour les données météorologiques -->
+    <record id="view_meteo_data_list" model="ir.ui.view">
+        <field name="name">meteo.data.list</field>
+        <field name="model">meteo.data</field>
+        <field name="arch" type="xml">
+            <list string="Données Météorologiques">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="latitude"/>
+                <field name="longitude"/>
+                <field name="temperature"/>
+                <field name="precipitation"/>
+                <field name="humidite"/>
+                <field name="source"/>
+                <field name="exploitation_id"/>
+                <field name="parcelle_id"/>
+                <field name="alerte_secheresse"/>
+                <field name="alerte_gel"/>
+                <field name="alerte_canicule"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vue formulaire pour les données météorologiques -->
+    <record id="view_meteo_data_form" model="ir.ui.view">
+        <field name="name">meteo.data.form</field>
+        <field name="model">meteo.data</field>
+        <field name="arch" type="xml">
+            <form string="Données Météorologiques">
+                <header>
+                    <button name="action_verifier_alertes" string="Vérifier Alertes" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Informations générales">
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="heure"/>
+                            <field name="source"/>
+                        </group>
+                        <group string="Coordonnées géographiques">
+                            <field name="latitude"/>
+                            <field name="longitude"/>
+                            <field name="altitude"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Données météorologiques">
+                        <group string="Températures">
+                            <field name="temperature"/>
+                            <field name="temperature_min"/>
+                            <field name="temperature_max"/>
+                        </group>
+                        <group string="Humidité et pression">
+                            <field name="humidite"/>
+                            <field name="pression"/>
+                        </group>
+                        <group string="Précipitations">
+                            <field name="precipitation"/>
+                            <field name="precipitation_prob"/>
+                        </group>
+                        <group string="Vent">
+                            <field name="vent_vitesse"/>
+                            <field name="vent_direction"/>
+                        </group>
+                        <group string="Rayonnement et évapotranspiration">
+                            <field name="rayonnement_solaire"/>
+                            <field name="evapotranspiration"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Indices et alertes">
+                        <group string="Indices">
+                            <field name="indice_uv"/>
+                            <field name="indice_qualite_air"/>
+                        </group>
+                        <group string="Alertes météorologiques">
+                            <field name="alerte_secheresse"/>
+                            <field name="alerte_gel"/>
+                            <field name="alerte_canicule"/>
+                            <field name="alerte_inondation"/>
+                            <field name="alerte_vent"/>
+                        </group>
+                        <group string="Stress calculés">
+                            <field name="stress_hydrique"/>
+                            <field name="stress_thermique"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Liens agricoles">
+                        <field name="exploitation_id"/>
+                        <field name="parcelle_id"/>
+                    </group>
+                    
+                    <group string="Notes">
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue recherche pour les données météorologiques -->
+    <record id="view_meteo_data_search" model="ir.ui.view">
+        <field name="name">meteo.data.search</field>
+        <field name="model">meteo.data</field>
+        <field name="arch" type="xml">
+            <search string="Recherche Données Météorologiques">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="source"/>
+                <field name="exploitation_id"/>
+                <field name="parcelle_id"/>
+                
+                <filter string="Aujourd'hui" name="aujourd_hui" domain="[('date', '=', context_today())]"/>
+                <filter string="Cette semaine" name="cette_semaine" domain="[('date', '>=', (context_today() - datetime.timedelta(days=7)))]"/>
+                <filter string="Ce mois" name="ce_mois" domain="[('date', '>=', (context_today() - datetime.timedelta(days=30)))]"/>
+                
+                <filter string="Alerte sécheresse" name="alerte_secheresse" domain="[('alerte_secheresse', '=', True)]"/>
+                <filter string="Alerte gel" name="alerte_gel" domain="[('alerte_gel', '=', True)]"/>
+                <filter string="Alerte canicule" name="alerte_canicule" domain="[('alerte_canicule', '=', True)]"/>
+                
+                <filter string="Meteostat" name="source_meteostat" domain="[('source', '=', 'meteostat')]"/>
+                <filter string="Météo France" name="source_meteo_france" domain="[('source', '=', 'meteo_france')]"/>
+                
+                <group expand="0" string="Regrouper par">
+                    <filter string="Source" name="group_source" context="{'group_by': 'source'}"/>
+                    <filter string="Exploitation" name="group_exploitation" context="{'group_by': 'exploitation_id'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions pour les données météorologiques -->
+    <record id="action_meteo_data" model="ir.actions.act_window">
+        <field name="name">Données Météorologiques</field>
+        <field name="res_model">meteo.data</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_meteo_data_list"/>
+        <field name="search_view_id" ref="view_meteo_data_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre première donnée météorologique
+            </p>
+        </field>
+    </record>
+
+    <record id="action_alertes_meteo" model="ir.actions.act_window">
+        <field name="name">Alertes Météorologiques</field>
+        <field name="res_model">meteo.data</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_meteo_data_list"/>
+        <field name="domain">[('|',('|',('|',('|',('alerte_secheresse', '=', True),('alerte_gel', '=', True)),('alerte_canicule', '=', True)),('alerte_inondation', '=', True)),('alerte_vent', '=', True))]</field>
+        <field name="context">{'search_default_alertes': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune alerte météorologique active
+            </p>
+        </field>
+    </record>
+
+    <record id="action_tendances_climatiques" model="ir.actions.act_window">
+        <field name="name">Tendances Climatiques</field>
+        <field name="res_model">meteo.data</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_meteo_data_list"/>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_ce_mois': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Analysez les tendances climatiques de vos parcelles
+            </p>
+        </field>
+    </record>
+</odoo>

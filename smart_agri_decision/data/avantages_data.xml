@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Avantages agronomiques -->
+        <record id="avantage_amelioration_sol" model="avantage.rotation">
+            <field name="nom">Amélioration de la structure du sol</field>
+            <field name="categorie">agronomique</field>
+            <field name="description">La rotation des cultures améliore la structure du sol en alternant les systèmes racinaires.</field>
+        </record>
+        
+        <record id="avantage_fertilité" model="avantage.rotation">
+            <field name="nom">Maintien de la fertilité</field>
+            <field name="categorie">agronomique</field>
+            <field name="description">Certaines cultures enrichissent le sol en azote pour les cultures suivantes.</field>
+        </record>
+        
+        <!-- Avantages économiques -->
+        <record id="avantage_reduction_couts" model="avantage.rotation">
+            <field name="nom">Réduction des coûts d'intrants</field>
+            <field name="categorie">economique</field>
+            <field name="description">Diminution des besoins en engrais et produits phytosanitaires.</field>
+        </record>
+        
+        <record id="avantage_rendement_stable" model="avantage.rotation">
+            <field name="nom">Rendements plus stables</field>
+            <field name="categorie">economique</field>
+            <field name="description">Meilleure régularité des rendements d'une année sur l'autre.</field>
+        </record>
+        
+        <!-- Avantages environnementaux -->
+        <record id="avantage_biodiversite" model="avantage.rotation">
+            <field name="nom">Augmentation de la biodiversité</field>
+            <field name="categorie">environnemental</field>
+            <field name="description">Diversification des habitats pour la faune et la flore.</field>
+        </record>
+        
+        <record id="avantage_reduction_pollution" model="avantage.rotation">
+            <field name="nom">Réduction de la pollution</field>
+            <field name="categorie">environnemental</field>
+            <field name="description">Moins de lessivage des nitrates et de pollution des eaux.</field>
+        </record>
+        
+        <!-- Avantages sanitaires -->
+        <record id="avantage_lutte_ravageurs" model="avantage.rotation">
+            <field name="nom">Lutte contre les ravageurs</field>
+            <field name="categorie">sanitaire</field>
+            <field name="description">Rupture du cycle de développement des ravageurs spécifiques.</field>
+        </record>
+        
+        <record id="avantage_lutte_maladies" model="avantage.rotation">
+            <field name="nom">Lutte contre les maladies</field>
+            <field name="categorie">sanitaire</field>
+            <field name="description">Réduction de l'incidence des maladies transmises par le sol.</field>
+        </record>
+    </data>
+</odoo> 

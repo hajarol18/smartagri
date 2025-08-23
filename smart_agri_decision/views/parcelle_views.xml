@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vue liste des parcelles -->
+    <record id="view_parcelle_list" model="ir.ui.view">
+        <field name="name">parcelle.agri.list</field>
+        <field name="model">parcelle.agri</field>
+        <field name="arch" type="xml">
+            <list string="Parcelles">
+                <field name="nom"/>
+                <field name="code_parcelle"/>
+                <field name="superficie"/>
+                <field name="exploitation_id"/>
+                <field name="type_sol"/>
+                <field name="systeme_irrigation"/>
+                <field name="etat_parcelle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vue formulaire des parcelles -->
+    <record id="view_parcelle_form" model="ir.ui.view">
+        <field name="name">parcelle.agri.form</field>
+        <field name="model">parcelle.agri</field>
+        <field name="arch" type="xml">
+            <form string="Parcelle">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="nom"/>
+                            <field name="code_parcelle"/>
+                            <field name="superficie"/>
+                            <field name="longueur"/>
+                            <field name="largeur"/>
+                            <field name="exploitation_id"/>
+                        </group>
+                        <group>
+                            <field name="latitude"/>
+                            <field name="longitude"/>
+                            <field name="altitude"/>
+                            <field name="type_sol"/>
+                            <field name="ph_sol"/>
+                            <field name="taux_matiere_organique"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Caractéristiques pédologiques">
+                        <group>
+                            <field name="capacite_retention"/>
+                            <field name="systeme_irrigation"/>
+                            <field name="etat_parcelle"/>
+                        </group>
+                        <group>
+                            <field name="culture_actuelle_id"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Historique des cultures">
+                            <field name="cultures_ids" readonly="1">
+                                <list>
+                                    <field name="nom"/>
+                                    <field name="famille"/>
+                                    <field name="saison_plantation"/>
+                                    <field name="rendement_moyen"/>
+                                    <field name="etat_culture"/>
+                                    <field name="exploitation_id"/>
+                                    <field name="parcelle_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action pour les parcelles -->
+    <record id="action_parcelle_agri" model="ir.actions.act_window">
+        <field name="name">Parcelles</field>
+        <field name="res_model">parcelle.agri</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre première parcelle
+            </p>
+        </field>
+    </record>
+</odoo> 

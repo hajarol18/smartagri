@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vue liste des cultures -->
+    <record id="view_culture_list" model="ir.ui.view">
+        <field name="name">culture.agri.list</field>
+        <field name="model">culture.agri</field>
+        <field name="arch" type="xml">
+            <list string="Cultures">
+                <field name="nom"/>
+                <field name="famille"/>
+                <field name="saison_plantation"/>
+                <field name="rendement_moyen"/>
+                <field name="etat_culture"/>
+                <field name="exploitation_id"/>
+                <field name="parcelle_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vue formulaire des cultures -->
+    <record id="view_culture_form" model="ir.ui.view">
+        <field name="name">culture.agri.form</field>
+        <field name="model">culture.agri</field>
+        <field name="arch" type="xml">
+            <form string="Culture">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="nom"/>
+                            <field name="nom_scientifique"/>
+                            <field name="famille"/>
+                            <field name="etat_culture"/>
+                        </group>
+                        <group>
+                            <field name="exploitation_id"/>
+                            <field name="parcelle_id"/>
+                            <field name="date_semis"/>
+                            <field name="date_recolte"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Cycle cultural">
+                        <group>
+                            <field name="duree_cycle"/>
+                            <field name="saison_plantation"/>
+                        </group>
+                        <group>
+                            <field name="rendement_moyen"/>
+                            <field name="rendement_min"/>
+                            <field name="rendement_max"/>
+                            <field name="rendement_effectif"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Besoins climatiques">
+                        <group>
+                            <field name="temperature_min"/>
+                            <field name="temperature_opt"/>
+                            <field name="temperature_max"/>
+                        </group>
+                        <group>
+                            <field name="besoin_eau"/>
+                            <field name="resistance_secheresse"/>
+                            <field name="resistance_gel"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Besoins pédologiques">
+                        <group>
+                            <field name="type_sol_prefere"/>
+                            <field name="ph_min"/>
+                            <field name="ph_max"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Notes">
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue pour les rotations culturales -->
+    <record id="view_rotation_culturelle_tree" model="ir.ui.view">
+        <field name="name">culture.agri.rotation.list</field>
+        <field name="model">culture.agri</field>
+        <field name="arch" type="xml">
+            <list string="Rotations Culturales">
+                <field name="nom"/>
+                <field name="famille"/>
+                <field name="saison_plantation"/>
+                <field name="duree_cycle"/>
+                <field name="rendement_moyen"/>
+                <field name="etat_culture"/>
+                <field name="exploitation_id"/>
+                <field name="parcelle_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vue pour l'historique des rendements -->
+    <record id="view_historique_rendements_tree" model="ir.ui.view">
+        <field name="name">culture.agri.historique.list</field>
+        <field name="model">culture.agri</field>
+        <field name="arch" type="xml">
+            <list string="Historique des Rendements">
+                <field name="nom"/>
+                <field name="famille"/>
+                <field name="date_semis"/>
+                <field name="date_recolte"/>
+                <field name="rendement_effectif"/>
+                <field name="rendement_moyen"/>
+                <field name="exploitation_id"/>
+                <field name="parcelle_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action pour les cultures -->
+    <record id="action_culture_agri" model="ir.actions.act_window">
+        <field name="name">Cultures</field>
+        <field name="res_model">culture.agri</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre première culture
+            </p>
+        </field>
+    </record>
+
+    <!-- Action pour les rotations culturales -->
+    <record id="action_rotation_culturelle" model="ir.actions.act_window">
+        <field name="name">Rotations Culturales</field>
+        <field name="res_model">culture.agri</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_rotation_culturelle_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_rotations': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre première rotation culturale !
+            </p>
+        </field>
+    </record>
+
+    <!-- Action pour l'historique des rendements -->
+    <record id="action_historique_rendements" model="ir.actions.act_window">
+        <field name="name">Historique des Rendements</field>
+        <field name="res_model">culture.agri</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_historique_rendements_tree"/>
+        <field name="domain">[('etat_culture', '=', 'terminee')]</field>
+        <field name="context">{'search_default_rendements_terminees': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucun rendement enregistré pour le moment !
+            </p>
+        </field>
+    </record>
+
+</odoo> 

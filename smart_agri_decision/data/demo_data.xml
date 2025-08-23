@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Exploitation agricole de démonstration 1 -->
+        <record id="exploitation_demo_1" model="exploitation.agri">
+            <field name="nom">Ferme du Soleil Levant</field>
+            <field name="proprietaire">Jean Dupont</field>
+            <field name="superficie_totale">45.5</field>
+            <field name="adresse">Route de la Vallée, 123</field>
+            <field name="ville">Bordeaux</field>
+            <field name="code_postal">33000</field>
+            <field name="telephone">05.56.12.34.56</field>
+            <field name="email">jean.dupont@ferme-soleil.fr</field>
+            <field name="latitude">44.8378</field>
+            <field name="longitude">-0.5792</field>
+            <field name="altitude">10</field>
+            <field name="zone_climatique">oceanique</field>
+            <field name="type_sol">limoneux</field>
+        </record>
+
+        <!-- Exploitation agricole de démonstration 2 -->
+        <record id="exploitation_demo_2" model="exploitation.agri">
+            <field name="nom">Domaine des Trois Chênes</field>
+            <field name="proprietaire">Marie Martin</field>
+            <field name="superficie_totale">78.2</field>
+            <field name="adresse">Chemin des Vignes, 456</field>
+            <field name="ville">Lyon</field>
+            <field name="code_postal">69000</field>
+            <field name="telephone">04.72.34.56.78</field>
+            <field name="email">marie.martin@domaine-trois-chenes.fr</field>
+            <field name="latitude">45.7578</field>
+            <field name="longitude">4.8320</field>
+            <field name="altitude">173</field>
+            <field name="zone_climatique">continental</field>
+            <field name="type_sol">argileux</field>
+        </record>
+
+        <!-- Exploitation agricole de démonstration 3 -->
+        <record id="exploitation_demo_3" model="exploitation.agri">
+            <field name="nom">Marais de la Camargue</field>
+            <field name="proprietaire">Pierre Blanc</field>
+            <field name="superficie_totale">120.0</field>
+            <field name="adresse">Route du Marais, 789</field>
+            <field name="ville">Arles</field>
+            <field name="code_postal">13200</field>
+            <field name="telephone">04.90.98.76.54</field>
+            <field name="email">pierre.blanc@marais-camargue.fr</field>
+            <field name="latitude">43.6766</field>
+            <field name="longitude">4.6283</field>
+            <field name="altitude">3</field>
+            <field name="zone_climatique">mediterraneen</field>
+            <field name="type_sol">sableux</field>
+        </record>
+    </data>
+</odoo> 

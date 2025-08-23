@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vue liste des rotations -->
+    <record id="view_rotation_list" model="ir.ui.view">
+        <field name="name">rotation.culturelle.list</field>
+        <field name="model">rotation.culturelle</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <list string="Rotations">
+                <field name="nom"/>
+                <field name="exploitation_id"/>
+                <field name="parcelle_id"/>
+                <field name="annee_debut"/>
+                <field name="duree_rotation"/>
+                <field name="objectif_rendement"/>
+                <field name="etat"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vue formulaire des rotations -->
+    <record id="view_rotation_form" model="ir.ui.view">
+        <field name="name">rotation.culturelle.form</field>
+        <field name="model">rotation.culturelle</field>
+        <field name="arch" type="xml">
+            <form string="Rotation Culturelle">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="nom"/>
+                            <field name="exploitation_id"/>
+                            <field name="parcelle_id"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="annee_debut"/>
+                            <field name="duree_rotation"/>
+                            <field name="objectif_rendement"/>
+                            <field name="objectif_qualite"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <field name="avantages_ids" widget="many2many_tags"/>
+                        <field name="etat"/>
+                    </group>
+                    
+                    <field name="observations"/>
+                    
+                    <notebook>
+                        <page string="Cultures de la rotation">
+                            <field name="cultures_rotation_ids">
+                                <list>
+                                    <field name="culture_id"/>
+                                    <field name="annee"/>
+                                    <field name="sequence"/>
+                                    <field name="rendement_obtenu"/>
+                                    <field name="qualite_obtenue"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action pour les rotations -->
+    <record id="action_rotation_culturelle" model="ir.actions.act_window">
+        <field name="name">Rotations Culturales</field>
+        <field name="res_model">rotation.culturelle</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre première rotation culturale
+            </p>
+        </field>
+    </record>
+
+    <!-- Vue liste des avantages -->
+    <record id="view_avantage_list" model="ir.ui.view">
+        <field name="name">avantage.rotation.list</field>
+        <field name="model">avantage.rotation</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <list string="Avantages">
+                <field name="nom"/>
+                <field name="categorie"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vue formulaire des avantages -->
+    <record id="view_avantage_form" model="ir.ui.view">
+        <field name="name">avantage.rotation.form</field>
+        <field name="model">avantage.rotation</field>
+        <field name="arch" type="xml">
+            <form string="Avantage de Rotation">
+                <sheet>
+                    <group>
+                        <field name="nom"/>
+                        <field name="categorie"/>
+                    </group>
+                    <field name="description"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action pour les avantages -->
+    <record id="action_avantage_rotation" model="ir.actions.act_window">
+        <field name="name">Avantages de Rotation</field>
+        <field name="res_model">avantage.rotation</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier avantage de rotation
+            </p>
+        </field>
+    </record>
+</odoo> 

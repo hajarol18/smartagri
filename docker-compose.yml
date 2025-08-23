@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: smartagri_postgres
+    environment:
+      POSTGRES_DB: smartagri
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  # Serveur Odoo 18
+  odoo18:
+    image: odoo:18.0
+    container_name: smartagri_odoo18
+    depends_on:
+      - postgres
+    environment:
+      HOST: postgres
+      USER: odoo
+      PASSWORD: odoo
+      DB: smartagri
+    volumes:
+      - ./smart_agri_decision:/mnt/extra-addons/smart_agri_decision
+      - odoo_data:/var/lib/odoo
+      - odoo_logs:/var/log/odoo
+    ports:
+      - "10018:8069"
+    command: >
+      --dev=reload
+      --dev-list=smart_agri_decision
+      --update=smart_agri_decision
+    restart: unless-stopped
+
+  # Interface d'administration PostgreSQL (optionnel)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: smartagri_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@smartagri.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  odoo_data:
+    driver: local
+  odoo_logs:
+    driver: local
+
+networks:
+  default:
+    name: smartagri_network
