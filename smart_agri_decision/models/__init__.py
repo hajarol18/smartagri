@@ -2,7 +2,11 @@ from . import exploitation
 from . import culture
 from . import parcelle
 from . import intervention
-from . import intrants_ressources
+from . import intrants
 from . import meteo
-from . import rcp_scenarios
-from . import ia_predictions
+from . import rcp_scenario
+from . import ia_model
+from . import ia_prediction
+from . import dashboard_main
+from . import dashboard_meteo
+from . import dashboard_agricole

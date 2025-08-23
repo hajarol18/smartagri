@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vue liste pour les modèles IA -->
+        <record id="view_ia_model_list" model="ir.ui.view">
+            <field name="name">ia.model.list</field>
+            <field name="model">ia.model</field>
+            <field name="arch" type="xml">
+                <tree string="Modèles d'Intelligence Artificielle" decoration-info="state == 'training'" decoration-success="state == 'active'" decoration-warning="state == 'inactive'">
+                    <field name="name"/>
+                    <field name="type_modele"/>
+                    <field name="algorithme"/>
+                    <field name="precision" widget="percentage"/>
+                    <field name="derniere_entrainement"/>
+                    <field name="state" widget="badge" decoration-info="state == 'training'" decoration-success="state == 'active'" decoration-warning="state == 'inactive'"/>
+                    <field name="exploitation_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vue formulaire pour les modèles IA -->
+        <record id="view_ia_model_form" model="ir.ui.view">
+            <field name="name">ia.model.form</field>
+            <field name="model">ia.model</field>
+            <field name="arch" type="xml">
+                <form string="Modèle d'Intelligence Artificielle">
+                    <header>
+                        <button name="action_entrainer" type="object" string="Entraîner" class="btn-primary" 
+                                states="draft,inactive" help="Entraîner le modèle avec de nouvelles données"/>
+                        <button name="action_activer" type="object" string="Activer" class="btn-primary" 
+                                states="trained" help="Activer le modèle pour les prédictions"/>
+                        <button name="action_desactiver" type="object" string="Désactiver" 
+                                states="active" help="Désactiver le modèle"/>
+                        <button name="action_evaluer" type="object" string="Évaluer" 
+                                states="active" help="Évaluer les performances du modèle"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,training,trained,active,inactive"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nom du modèle IA"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Informations générales">
+                                <field name="type_modele"/>
+                                <field name="algorithme"/>
+                                <field name="description"/>
+                                <field name="exploitation_id"/>
+                                <field name="parcelle_id"/>
+                            </group>
+                            
+                            <group string="Configuration">
+                                <field name="version"/>
+                                <field name="auteur"/>
+                                <field name="date_creation"/>
+                                <field name="derniere_entrainement"/>
+                                <field name="prochaine_entrainement"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Paramètres du modèle" name="parametres_modele">
+                                <group>
+                                    <group string="Algorithme">
+                                        <field name="algorithme"/>
+                                        <field name="hyperparametres" widget="text"/>
+                                        <field name="seuil_confiance"/>
+                                        <field name="taille_echantillon"/>
+                                    </group>
+                                    
+                                    <group string="Données d'entraînement">
+                                        <field name="donnees_entrainement"/>
+                                        <field name="donnees_validation"/>
+                                        <field name="donnees_test"/>
+                                        <field name="qualite_donnees"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group string="Performance">
+                                        <field name="precision" widget="percentage"/>
+                                        <field name="rappel" widget="percentage"/>
+                                        <field name="f1_score" widget="percentage"/>
+                                        <field name="auc_score"/>
+                                    </group>
+                                    
+                                    <group string="Métriques">
+                                        <field name="erreur_moyenne"/>
+                                        <field name="erreur_quadratique"/>
+                                        <field name="coefficient_determination"/>
+                                        <field name="bias"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Entraînement et validation" name="entrainement_validation">
+                                <group>
+                                    <group string="Historique d'entraînement">
+                                        <field name="nombre_entrainements"/>
+                                        <field name="meilleur_score"/>
+                                        <field name="evolution_performance" widget="text"/>
+                                        <field name="overfitting_detected"/>
+                                    </group>
+                                    
+                                    <group string="Validation croisée">
+                                        <field name="folds_validation"/>
+                                        <field name="score_validation"/>
+                                        <field name="ecart_type_validation"/>
+                                    </group>
+                                </group>
+                                
+                                <field name="historique_entrainement_ids">
+                                    <tree editable="bottom">
+                                        <field name="date_entrainement"/>
+                                        <field name="precision"/>
+                                        <field name="rappel"/>
+                                        <field name="f1_score"/>
+                                        <field name="erreur_moyenne"/>
+                                        <field name="duree_entrainement"/>
+                                        <field name="commentaires"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            
+                            <page string="Prédictions" name="predictions">
+                                <group>
+                                    <group string="Prédictions récentes">
+                                        <field name="derniere_prediction"/>
+                                        <field name="nombre_predictions"/>
+                                        <field name="taux_succes"/>
+                                    </group>
+                                    
+                                    <group string="Limites">
+                                        <field name="limites_prediction"/>
+                                        <field name="incertitude"/>
+                                        <field name="biais_connu"/>
+                                    </group>
+                                </group>
+                                
+                                <field name="predictions_ids">
+                                    <tree editable="bottom">
+                                        <field name="date_prediction"/>
+                                        <field name="valeur_predite"/>
+                                        <field name="valeur_reelle"/>
+                                        <field name="confiance"/>
+                                        <field name="erreur"/>
+                                        <field name="commentaires"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            
+                            <page string="Déploiement" name="deploiement">
+                                <group>
+                                    <group string="API">
+                                        <field name="endpoint_api"/>
+                                        <field name="version_api"/>
+                                        <field name="documentation_api"/>
+                                    </group>
+                                    
+                                    <group string="Monitoring">
+                                        <field name="logs_prediction"/>
+                                        <field name="metriques_temps_reel"/>
+                                        <field name="alertes_performance"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group string="Intégration">
+                                        <field name="integrations"/>
+                                        <field name="webhooks"/>
+                                        <field name="format_sortie"/>
+                                    </group>
+                                    
+                                    <group string="Sécurité">
+                                        <field name="authentification"/>
+                                        <field name="autorisation"/>
+                                        <field name="chiffrement"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                        
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vue recherche pour les modèles IA -->
+        <record id="view_ia_model_search" model="ir.ui.view">
+            <field name="name">ia.model.search</field>
+            <field name="model">ia.model</field>
+            <field name="arch" type="xml">
+                <search string="Recherche Modèles IA">
+                    <field name="name"/>
+                    <field name="type_modele"/>
+                    <field name="algorithme"/>
+                    <field name="exploitation_id"/>
+                    
+                    <filter string="Modèles actifs" name="actifs" domain="[('state', '=', 'active')]"/>
+                    <filter string="Modèles en entraînement" name="entrainement" domain="[('state', '=', 'training')]"/>
+                    <filter string="Modèles entraînés" name="entraines" domain="[('state', '=', 'trained')]"/>
+                    
+                    <filter string="Précision > 80%" name="haute_precision" domain="[('precision', '>', 80)]"/>
+                    <filter string="Précision > 90%" name="tres_haute_precision" domain="[('precision', '>', 90)]"/>
+                    
+                    <filter string="Modèles récents" name="recents" domain="[('derniere_entrainement', '>=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                    
+                    <group expand="0" string="Regrouper par">
+                        <filter string="Type de modèle" name="group_type" context="{'group_by': 'type_modele'}"/>
+                        <filter string="Algorithme" name="group_algorithme" context="{'group_by': 'algorithme'}"/>
+                        <filter string="État" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Exploitation" name="group_exploitation" context="{'group_by': 'exploitation_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Vue liste pour les prédictions IA -->
+        <record id="view_ia_prediction_list" model="ir.ui.view">
+            <field name="name">ia.prediction.list</field>
+            <field name="model">ia.prediction</field>
+            <field name="arch" type="xml">
+                <tree string="Prédictions IA" decoration-info="etat == 'en_cours'" decoration-success="etat == 'terminee'" decoration-warning="etat == 'erreur'">
+                    <field name="name"/>
+                    <field name="modele_id"/>
+                    <field name="type_prediction"/>
+                    <field name="valeur_predite"/>
+                    <field name="confiance" widget="percentage"/>
+                    <field name="date_prediction"/>
+                    <field name="etat" widget="badge" decoration-info="etat == 'en_cours'" decoration-success="etat == 'terminee'" decoration-warning="etat == 'erreur'"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vue formulaire pour les prédictions IA -->
+        <record id="view_ia_prediction_form" model="ir.ui.view">
+            <field name="name">ia.prediction.form</field>
+            <field name="model">ia.prediction</field>
+            <field name="arch" type="xml">
+                <form string="Prédiction IA">
+                    <header>
+                        <button name="action_lancer_prediction" type="object" string="Lancer Prédiction" class="btn-primary" 
+                                states="brouillon" help="Lancer la prédiction avec le modèle sélectionné"/>
+                        <button name="action_valider" type="object" string="Valider" 
+                                states="terminee" help="Valider la prédiction"/>
+                        <button name="action_rejeter" type="object" string="Rejeter" 
+                                states="terminee" help="Rejeter la prédiction"/>
+                        <field name="etat" widget="statusbar" statusbar_visible="brouillon,en_cours,terminee,validee,rejetee,erreur"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nom de la prédiction"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Configuration">
+                                <field name="modele_id"/>
+                                <field name="type_prediction"/>
+                                <field name="description"/>
+                                <field name="priorite"/>
+                            </group>
+                            
+                            <group string="Données d'entrée">
+                                <field name="donnees_entree" widget="text"/>
+                                <field name="parametres" widget="text"/>
+                                <field name="contraintes"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Résultats" name="resultats">
+                                <group>
+                                    <group string="Prédiction">
+                                        <field name="valeur_predite"/>
+                                        <field name="confiance" widget="percentage"/>
+                                        <field name="intervalle_confiance"/>
+                                        <field name="marge_erreur"/>
+                                    </group>
+                                    
+                                    <group string="Métriques">
+                                        <field name="score_qualite"/>
+                                        <field name="anomalies_detectees"/>
+                                        <field name="explications"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group string="Validation">
+                                        <field name="valeur_reelle"/>
+                                        <field name="erreur"/>
+                                        <field name="precision"/>
+                                        <field name="commentaires_validation"/>
+                                    </group>
+                                    
+                                    <group string="Actions">
+                                        <field name="actions_recommandees"/>
+                                        <field name="risques_identifies"/>
+                                        <field name="opportunites"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Historique" name="historique">
+                                <field name="historique_execution_ids">
+                                    <tree editable="bottom">
+                                        <field name="date_execution"/>
+                                        <field name="etat"/>
+                                        <field name="duree_execution"/>
+                                        <field name="ressources_utilisees"/>
+                                        <field name="logs"/>
+                                        <field name="commentaires"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Actions pour les modèles IA -->
+        <record id="action_ia_models" model="ir.actions.act_window">
+            <field name="name">Modèles d'Intelligence Artificielle</field>
+            <field name="res_model">ia.model</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_ia_model_list"/>
+            <field name="search_view_id" ref="view_ia_model_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier modèle d'intelligence artificielle
+                </p>
+                <p>
+                    Les modèles IA permettent de prédire les rendements, optimiser les cultures 
+                    et anticiper les risques climatiques.
+                </p>
+            </field>
+        </record>
+
+        <!-- Actions pour les prédictions IA -->
+        <record id="action_ia_predictions" model="ir.actions.act_window">
+            <field name="name">Prédictions IA</field>
+            <field name="res_model">ia.prediction</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_ia_prediction_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Lancez vos premières prédictions avec l'IA
+                </p>
+                <p>
+                    Utilisez vos modèles entraînés pour prédire les rendements, 
+                    optimiser les cultures et anticiper les risques.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

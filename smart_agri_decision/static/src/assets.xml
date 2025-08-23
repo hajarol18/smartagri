@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Assets pour la carte Leaflet -->
+        <template id="assets_backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <!-- Leaflet CSS -->
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+                      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+                      crossorigin=""/>
+                
+                <!-- Leaflet JavaScript -->
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+                        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+                        crossorigin=""></script>
+                
+                <!-- Nos fichiers -->
+                <link rel="stylesheet" type="text/css" href="/smart_agri_decision/static/src/css/leaflet_map.css"/>
+                <script type="text/javascript" src="/smart_agri_decision/static/src/js/leaflet_map.js"/>
+            </xpath>
+        </template>
+        
+        <!-- Template QWeb pour Leaflet -->
+        <template id="leaflet_map_template" name="LeafletMapWidget">
+            <div class="o_leaflet_map_widget">
+                <div class="leaflet-map" style="height: 500px; width: 100%; border: 2px solid #ddd; border-radius: 8px;"></div>
+                <div class="leaflet-info mt-2">
+                    <div class="alert alert-info">
+                        <i class="fa fa-info-circle"></i>
+                        <strong>Instructions:</strong>
+                        <ul class="mb-0 mt-1">
+                            <li>Cliquez sur "Dessiner" pour commencer à créer une parcelle</li>
+                            <li>Cliquez sur la carte pour ajouter des points</li>
+                            <li>Cliquez sur "Terminer" quand vous avez fini</li>
+                            <li>Une parcelle doit avoir au moins 3 points</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

@@ -1,55 +1,202 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!-- Exploitation agricole de démonstration 1 -->
-        <record id="exploitation_demo_1" model="exploitation.agri">
-            <field name="nom">Ferme du Soleil Levant</field>
-            <field name="proprietaire">Jean Dupont</field>
-            <field name="superficie_totale">45.5</field>
-            <field name="adresse">Route de la Vallée, 123</field>
-            <field name="ville">Bordeaux</field>
-            <field name="code_postal">33000</field>
-            <field name="telephone">05.56.12.34.56</field>
-            <field name="email">jean.dupont@ferme-soleil.fr</field>
-            <field name="latitude">44.8378</field>
-            <field name="longitude">-0.5792</field>
-            <field name="altitude">10</field>
-            <field name="zone_climatique">oceanique</field>
-            <field name="type_sol">limoneux</field>
+        <!-- Données de démonstration pour les scénarios RCP -->
+        <record id="demo_rcp_scenario_1" model="rcp.scenario">
+            <field name="name">Scénario RCP 4.5 - Ferme du Soleil Levant</field>
+            <field name="description">Scénario climatique intermédiaire pour l'exploitation principale</field>
+            <field name="rcp_type">rcp_45</field>
+            <field name="exploitation_id" ref="exploitation_ferme_soleil"/>
+            <field name="annee_debut">2020</field>
+            <field name="annee_fin">2100</field>
+            <field name="temperature_rise">2.4</field>
+            <field name="co2_concentration">538</field>
+            <field name="precipitation_change">2.5</field>
+            <field name="state">active</field>
         </record>
 
-        <!-- Exploitation agricole de démonstration 2 -->
-        <record id="exploitation_demo_2" model="exploitation.agri">
-            <field name="nom">Domaine des Trois Chênes</field>
-            <field name="proprietaire">Marie Martin</field>
-            <field name="superficie_totale">78.2</field>
-            <field name="adresse">Chemin des Vignes, 456</field>
-            <field name="ville">Lyon</field>
-            <field name="code_postal">69000</field>
-            <field name="telephone">04.72.34.56.78</field>
-            <field name="email">marie.martin@domaine-trois-chenes.fr</field>
-            <field name="latitude">45.7578</field>
-            <field name="longitude">4.8320</field>
-            <field name="altitude">173</field>
-            <field name="zone_climatique">continental</field>
-            <field name="type_sol">argileux</field>
+        <record id="demo_rcp_scenario_2" model="rcp.scenario">
+            <field name="name">Scénario RCP 8.5 - Ferme du Soleil Levant</field>
+            <field name="description">Scénario climatique pessimiste pour l'exploitation principale</field>
+            <field name="rcp_type">rcp_85</field>
+            <field name="exploitation_id" ref="exploitation_ferme_soleil"/>
+            <field name="annee_debut">2020</field>
+            <field name="annee_fin">2100</field>
+            <field name="temperature_rise">4.3</field>
+            <field name="co2_concentration">936</field>
+            <field name="precipitation_change">-2.5</field>
+            <field name="state">draft</field>
         </record>
 
-        <!-- Exploitation agricole de démonstration 3 -->
-        <record id="exploitation_demo_3" model="exploitation.agri">
-            <field name="nom">Marais de la Camargue</field>
-            <field name="proprietaire">Pierre Blanc</field>
-            <field name="superficie_totale">120.0</field>
-            <field name="adresse">Route du Marais, 789</field>
-            <field name="ville">Arles</field>
-            <field name="code_postal">13200</field>
-            <field name="telephone">04.90.98.76.54</field>
-            <field name="email">pierre.blanc@marais-camargue.fr</field>
-            <field name="latitude">43.6766</field>
-            <field name="longitude">4.6283</field>
-            <field name="altitude">3</field>
-            <field name="zone_climatique">mediterraneen</field>
-            <field name="type_sol">sableux</field>
+        <!-- Données de démonstration pour les modèles IA -->
+        <record id="demo_ia_model_1" model="ia.model">
+            <field name="name">Modèle IA - Prédiction Rendement Blé</field>
+            <field name="description">Modèle de machine learning pour prédire les rendements du blé</field>
+            <field name="type_modele">regression</field>
+            <field name="algorithme">random_forest</field>
+            <field name="exploitation_id" ref="exploitation_ferme_soleil"/>
+            <field name="precision">87.5</field>
+            <field name="rappel">85.2</field>
+            <field name="f1_score">86.3</field>
+            <field name="state">active</field>
+        </record>
+
+        <record id="demo_ia_model_2" model="ia.model">
+            <field name="name">Modèle IA - Détection Stress Hydrique</field>
+            <field name="description">Modèle de classification pour détecter le stress hydrique</field>
+            <field name="type_modele">classification</field>
+            <field name="algorithme">neural_network</field>
+            <field name="exploitation_id" ref="exploitation_ferme_soleil"/>
+            <field name="precision">92.1</field>
+            <field name="rappel">89.7</field>
+            <field name="f1_score">90.9</field>
+            <field name="state">trained</field>
+        </record>
+
+        <!-- Données de démonstration pour les prédictions IA -->
+        <record id="demo_ia_prediction_1" model="ia.prediction">
+            <field name="name">Prédiction Rendement Blé - Août 2024</field>
+            <field name="modele_id" ref="demo_ia_model_1"/>
+            <field name="type_prediction">rendement</field>
+            <field name="description">Prédiction du rendement de blé pour la récolte d'août 2024</field>
+            <field name="valeur_predite">95.6</field>
+            <field name="confiance">87.5</field>
+            <field name="etat">validee</field>
+            <field name="date_prediction">2024-08-23 10:00:00</field>
+        </record>
+
+        <record id="demo_ia_prediction_2" model="ia.prediction">
+            <field name="name">Prédiction Stress Hydrique - Septembre 2024</field>
+            <field name="modele_id" ref="demo_ia_model_2"/>
+            <field name="type_prediction">stress</field>
+            <field name="description">Prédiction du stress hydrique pour septembre 2024</field>
+            <field name="valeur_predite">0.3</field>
+            <field name="confiance">92.1</field>
+            <field name="etat">terminee</field>
+            <field name="date_prediction">2024-08-23 11:00:00</field>
+        </record>
+
+        <!-- Données de démonstration pour les tableaux de bord -->
+        <record id="demo_dashboard_main_1" model="dashboard.main">
+            <field name="name">Tableau de Bord Global - Ferme du Soleil Levant</field>
+            <field name="type_dashboard">global</field>
+            <field name="exploitation_id" ref="exploitation_ferme_soleil"/>
+            <field name="derniere_mise_a_jour">2024-08-23 12:00:00</field>
+            <field name="frequence_mise_a_jour">15min</field>
+        </record>
+
+        <record id="demo_dashboard_meteo_1" model="dashboard.meteo">
+            <field name="name">Dashboard Météo - Ferme du Soleil Levant</field>
+            <field name="exploitation_id" ref="exploitation_ferme_soleil"/>
+            <field name="periode_analyse">7j</field>
+            <field name="derniere_mise_a_jour">2024-08-23 12:00:00</field>
+            <field name="temperature_actuelle">24.5</field>
+            <field name="humidite_actuelle">65.2</field>
+            <field name="precipitation_actuelle">0.0</field>
+            <field name="vent_actuel">12.3</field>
+            <field name="alertes_actives_count">0</field>
+            <field name="niveau_alerte_max">vert</field>
+        </record>
+
+        <record id="demo_dashboard_agricole_1" model="dashboard.agricole">
+            <field name="name">Dashboard Agricole - Ferme du Soleil Levant</field>
+            <field name="exploitation_id" ref="exploitation_ferme_soleil"/>
+            <field name="superficie_totale">150.5</field>
+            <field name="nombre_parcelles">8</field>
+            <field name="type_cultures">Blé, Maïs, Tournesol, Orge</field>
+            <field name="saison_courante">ete</field>
+            <field name="phase_culture">croissance</field>
+            <field name="rendement_actuel">95.6</field>
+            <field name="rendement_precedent">92.3</field>
+            <field name="evolution_rendement">3.6</field>
+            <field name="interventions_planifiees">3</field>
+            <field name="cout_interventions">1250.00</field>
+            <field name="efficacite_irrigation">78.5</field>
+            <field name="stress_hydrique">0.2</field>
+            <field name="indice_qualite">82.5</field>
+            <field name="biodiversite">75.0</field>
+        </record>
+
+        <!-- Données de démonstration pour les données annuelles RCP -->
+        <record id="demo_rcp_donnee_2024" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_scenario_1"/>
+            <field name="annee">2024</field>
+            <field name="temperature_moyenne">15.8</field>
+            <field name="precipitation_totale">820.5</field>
+            <field name="stress_hydrique">0.15</field>
+            <field name="stress_thermique">0.08</field>
+            <field name="rendement_projete">95.2</field>
+        </record>
+
+        <record id="demo_rcp_donnee_2025" model="rcp.donnee.annuelle">
+            <field name="scenario_id" ref="demo_rcp_scenario_1"/>
+            <field name="annee">2025</field>
+            <field name="temperature_moyenne">16.1</field>
+            <field name="precipitation_totale">815.2</field>
+            <field name="stress_hydrique">0.18</field>
+            <field name="stress_thermique">0.12</field>
+            <field name="rendement_projete">93.8</field>
+        </record>
+
+        <!-- Données de démonstration pour l'historique d'entraînement IA -->
+        <record id="demo_ia_historique_1" model="ia.historique.entrainement">
+            <field name="modele_id" ref="demo_ia_model_1"/>
+            <field name="date_entrainement">2024-08-20 14:00:00</field>
+            <field name="precision">87.5</field>
+            <field name="rappel">85.2</field>
+            <field name="f1_score">86.3</field>
+            <field name="erreur_moyenne">0.124</field>
+            <field name="duree_entrainement">45.2</field>
+            <field name="commentaires">Entraînement réussi avec 1000 échantillons</field>
+        </record>
+
+        <record id="demo_ia_historique_2" model="ia.historique.entrainement">
+            <field name="modele_id" ref="demo_ia_model_2"/>
+            <field name="date_entrainement">2024-08-22 09:00:00</field>
+            <field name="precision">92.1</field>
+            <field name="rappel">89.7</field>
+            <field name="f1_score">90.9</field>
+            <field name="erreur_moyenne">0.089</field>
+            <field name="duree_entrainement">78.5</field>
+            <field name="commentaires">Entraînement avec validation croisée 5-fold</field>
+        </record>
+
+        <!-- Données de démonstration pour l'historique d'exécution IA -->
+        <record id="demo_ia_execution_1" model="ia.historique.execution">
+            <field name="prediction_id" ref="demo_ia_prediction_1"/>
+            <field name="date_execution">2024-08-23 10:00:00</field>
+            <field name="etat">terminee</field>
+            <field name="duree_execution">12.3</field>
+            <field name="ressources_utilisees">CPU: 12%, RAM: 256MB</field>
+            <field name="commentaires">Prédiction exécutée avec succès</field>
+        </record>
+
+        <record id="demo_ia_execution_2" model="ia.historique.execution">
+            <field name="prediction_id" ref="demo_ia_prediction_2"/>
+            <field name="date_execution">2024-08-23 11:00:00</field>
+            <field name="etat">terminee</field>
+            <field name="duree_execution">8.7</field>
+            <field name="ressources_utilisees">CPU: 8%, RAM: 128MB</field>
+            <field name="commentaires">Prédiction exécutée avec succès</field>
+        </record>
+
+        <!-- Données de démonstration pour les rapports de tableau de bord -->
+        <record id="demo_dashboard_rapport_1" model="dashboard.rapport">
+            <field name="dashboard_id" ref="demo_dashboard_meteo_1"/>
+            <field name="type_rapport">quotidien</field>
+            <field name="date_rapport">2024-08-23 06:00:00</field>
+            <field name="statut">termine</field>
+            <field name="taille_fichier">1.2 MB</field>
+            <field name="actions">Rapport généré et envoyé automatiquement</field>
+        </record>
+
+        <record id="demo_dashboard_rapport_2" model="dashboard.rapport">
+            <field name="dashboard_id" ref="demo_dashboard_agricole_1"/>
+            <field name="type_rapport">hebdomadaire</field>
+            <field name="date_rapport">2024-08-19 08:00:00</field>
+            <field name="statut">termine</field>
+            <field name="taille_fichier">3.8 MB</field>
+            <field name="actions">Rapport hebdomadaire avec analyse des tendances</field>
         </record>
     </data>
 </odoo> 

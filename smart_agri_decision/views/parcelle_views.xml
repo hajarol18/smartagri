@@ -1,88 +1,394 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Vue liste des parcelles -->
-    <record id="view_parcelle_list" model="ir.ui.view">
-        <field name="name">parcelle.agri.list</field>
-        <field name="model">parcelle.agri</field>
-        <field name="arch" type="xml">
-            <list string="Parcelles">
-                <field name="nom"/>
-                <field name="code_parcelle"/>
-                <field name="superficie"/>
-                <field name="exploitation_id"/>
-                <field name="type_sol"/>
-                <field name="systeme_irrigation"/>
-                <field name="etat_parcelle"/>
-            </list>
-        </field>
-    </record>
-
-    <!-- Vue formulaire des parcelles -->
-    <record id="view_parcelle_form" model="ir.ui.view">
-        <field name="name">parcelle.agri.form</field>
-        <field name="model">parcelle.agri</field>
-        <field name="arch" type="xml">
-            <form string="Parcelle">
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="nom"/>
-                            <field name="code_parcelle"/>
-                            <field name="superficie"/>
-                            <field name="longueur"/>
-                            <field name="largeur"/>
-                            <field name="exploitation_id"/>
-                        </group>
-                        <group>
-                            <field name="latitude"/>
-                            <field name="longitude"/>
-                            <field name="altitude"/>
-                            <field name="type_sol"/>
-                            <field name="ph_sol"/>
-                            <field name="taux_matiere_organique"/>
-                        </group>
-                    </group>
+    <data>
+        <!-- Vue formulaire pour parcelle.agri avec carte Leaflet -->
+        <record id="view_parcelle_agri_form_map" model="ir.ui.view">
+            <field name="name">parcelle.agri.form.map</field>
+            <field name="model">parcelle.agri</field>
+            <field name="arch" type="xml">
+                <form string="Parcelle Agricole">
+                    <header>
+                        <button name="action_calculer_surface" type="object" string="📏 Calculer Surface" class="btn-primary"/>
+                        <button name="action_centrer_carte" type="object" string="🗺️ Centrer Carte" class="btn-secondary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,active"/>
+                    </header>
                     
-                    <group string="Caractéristiques pédologiques">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="nom" placeholder="Nom de la parcelle"/>
+                            </h1>
+                        </div>
+                        
                         <group>
-                            <field name="capacite_retention"/>
-                            <field name="systeme_irrigation"/>
-                            <field name="etat_parcelle"/>
+                            <group string="Informations Générales">
+                                <field name="exploitation_id" required="1"/>
+                                <field name="culture_id"/>
+                                <field name="surface" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="surface_calculee" readonly="1" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="unite_surface" required="1"/>
+                                <field name="date_plantation"/>
+                                <field name="date_recolte_prevue"/>
+                            </group>
+                            
+                            <group string="Géolocalisation">
+                                <field name="latitude" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="longitude" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="altitude" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="coordonnees_gps" readonly="1"/>
+                            </group>
                         </group>
+                        
+                        <!-- Carte Leaflet Interactive -->
+                        <group string="🗺️ Carte Interactive - Création de Parcelle">
+                            <field name="carte_parcelle" widget="leaflet_map" options="{'height': '600px'}"/>
+                        </group>
+                        
                         <group>
-                            <field name="culture_actuelle_id"/>
+                            <group string="Caractéristiques du Sol">
+                                <field name="type_sol"/>
+                                <field name="ph_sol" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="materiau_organique" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="capacite_retention_eau" widget="float_time" options="{'widget': 'float_time'}"/>
+                            </group>
+                            
+                            <group string="Irrigation et Drainage">
+                                <field name="systeme_irrigation"/>
+                                <field name="besoin_eau" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="efficacite_irrigation" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="systeme_drainage"/>
+                            </group>
                         </group>
-                    </group>
+                        
+                        <group>
+                            <group string="Gestion des Cultures">
+                                <field name="rotation_culture"/>
+                                <field name="densite_plantation" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="espacement_rangs" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="espacement_plantes" widget="float_time" options="{'widget': 'float_time'}"/>
+                            </group>
+                            
+                            <group string="Suivi et Maintenance">
+                                <field name="derniere_intervention"/>
+                                <field name="prochaine_intervention"/>
+                                <field name="notes" placeholder="Notes et observations..."/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Interventions" name="interventions">
+                                <field name="intervention_ids" readonly="1">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="type_intervention"/>
+                                        <field name="description"/>
+                                        <field name="cout"/>
+                                        <field name="statut"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            
+                            <page string="Météo" name="meteo">
+                                <field name="meteo_data_ids" readonly="1">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="temperature"/>
+                                        <field name="precipitation"/>
+                                        <field name="humidite"/>
+                                        <field name="vent_vitesse"/>
+                                        <field name="alerte_gel"/>
+                                        <field name="alerte_canicule"/>
+                                        <field name="alerte_secheresse"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            
+                            <page string="Historique" name="historique">
+                                <field name="historique_ids" readonly="1">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="action"/>
+                                        <field name="details"/>
+                                        <field name="utilisateur_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
                     
-                    <notebook>
-                        <page string="Historique des cultures">
-                            <field name="cultures_ids" readonly="1">
-                                <list>
-                                    <field name="nom"/>
-                                    <field name="famille"/>
-                                    <field name="saison_plantation"/>
-                                    <field name="rendement_moyen"/>
-                                    <field name="etat_culture"/>
-                                    <field name="exploitation_id"/>
-                                    <field name="parcelle_id"/>
-                                </list>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
 
-    <!-- Action pour les parcelles -->
-    <record id="action_parcelle_agri" model="ir.actions.act_window">
-        <field name="name">Parcelles</field>
-        <field name="res_model">parcelle.agri</field>
-        <field name="view_mode">list,form</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Créez votre première parcelle
-            </p>
-        </field>
-    </record>
+        <!-- Vue formulaire simplifiée pour parcelle.agri -->
+        <record id="view_parcelle_agri_form" model="ir.ui.view">
+            <field name="name">parcelle.agri.form</field>
+            <field name="model">parcelle.agri</field>
+            <field name="arch" type="xml">
+                <form string="Parcelle Agricole">
+                    <header>
+                        <button name="action_calculer_surface" type="object" string="📏 Calculer Surface" class="btn-primary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,active"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="nom" placeholder="Nom de la parcelle"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Informations Générales">
+                                <field name="exploitation_id" required="1"/>
+                                <field name="culture_id"/>
+                                <field name="surface" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="surface_calculee" readonly="1" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="unite_surface" required="1"/>
+                                <field name="date_plantation"/>
+                                <field name="date_recolte_prevue"/>
+                            </group>
+                            
+                            <group string="Géolocalisation">
+                                <field name="latitude" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="longitude" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="altitude" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="coordonnees_gps" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Caractéristiques du Sol">
+                                <field name="type_sol"/>
+                                <field name="ph_sol" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="materiau_organique" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="capacite_retention_eau" widget="float_time" options="{'widget': 'float_time'}"/>
+                            </group>
+                            
+                            <group string="Irrigation et Drainage">
+                                <field name="systeme_irrigation"/>
+                                <field name="besoin_eau" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="efficacite_irrigation" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="systeme_drainage"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Gestion des Cultures">
+                                <field name="rotation_culture"/>
+                                <field name="densite_plantation" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="espacement_rangs" widget="float_time" options="{'widget': 'float_time'}"/>
+                                <field name="espacement_plantes" widget="float_time" options="{'widget': 'float_time'}"/>
+                            </group>
+                            
+                            <group string="Suivi et Maintenance">
+                                <field name="derniere_intervention"/>
+                                <field name="prochaine_intervention"/>
+                                <field name="notes" placeholder="Notes et observations..."/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Interventions" name="interventions">
+                                <field name="intervention_ids" readonly="1">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="type_intervention"/>
+                                        <field name="description"/>
+                                        <field name="cout"/>
+                                        <field name="statut"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            
+                            <page string="Météo" name="meteo">
+                                <field name="meteo_data_ids" readonly="1">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="temperature"/>
+                                        <field name="precipitation"/>
+                                        <field name="humidite"/>
+                                        <field name="vent_vitesse"/>
+                                        <field name="alerte_gel"/>
+                                        <field name="alerte_canicule"/>
+                                        <field name="alerte_secheresse"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            
+                            <page string="Historique" name="historique">
+                                <field name="historique_ids" readonly="1">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="action"/>
+                                        <field name="details"/>
+                                        <field name="utilisateur_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vue liste pour parcelle.agri -->
+        <record id="view_parcelle_agri_tree" model="ir.ui.view">
+            <field name="name">parcelle.agri.tree</field>
+            <field name="model">parcelle.agri</field>
+            <field name="arch" type="xml">
+                <tree string="Parcelles Agricoles">
+                    <field name="nom"/>
+                    <field name="exploitation_id"/>
+                    <field name="culture_id"/>
+                    <field name="surface" widget="float_time" options="{'widget': 'float_time'}"/>
+                    <field name="surface_calculee" widget="float_time" options="{'widget': 'float_time'}"/>
+                    <field name="unite_surface"/>
+                    <field name="latitude" widget="float_time" options="{'widget': 'float_time'}"/>
+                    <field name="longitude" widget="float_time" options="{'widget': 'float_time'}"/>
+                    <field name="type_sol"/>
+                    <field name="state"/>
+                    <field name="derniere_intervention"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vue recherche pour parcelle.agri -->
+        <record id="view_parcelle_agri_search" model="ir.ui.view">
+            <field name="name">parcelle.agri.search</field>
+            <field name="model">parcelle.agri</field>
+            <field name="arch" type="xml">
+                <search string="Recherche Parcelles">
+                    <field name="nom"/>
+                    <field name="exploitation_id"/>
+                    <field name="culture_id"/>
+                    <field name="type_sol"/>
+                    <field name="state"/>
+                    
+                    <filter string="Mes Parcelles" name="mes_parcelles" domain="[('exploitation_id.user_id', '=', uid)]"/>
+                    <filter string="Parcelles Actives" name="actives" domain="[('state', '=', 'active')]"/>
+                    <filter string="Parcelles en Brouillon" name="brouillon" domain="[('state', '=', 'draft')]"/>
+                    
+                    <group expand="0" string="Regrouper par">
+                        <filter string="Exploitation" name="group_exploitation" context="{'group_by': 'exploitation_id'}"/>
+                        <filter string="Culture" name="group_culture" context="{'group_by': 'culture_id'}"/>
+                        <filter string="Type de Sol" name="group_sol" context="{'group_by': 'type_sol'}"/>
+                        <filter string="État" name="group_state" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Vue kanban pour parcelle.agri -->
+        <record id="view_parcelle_agri_kanban" model="ir.ui.view">
+            <field name="name">parcelle.agri.kanban</field>
+            <field name="model">parcelle.agri</field>
+            <field name="arch" type="xml">
+                <kanban string="Parcelles Agricoles" class="o_kanban_small_column">
+                    <field name="nom"/>
+                    <field name="exploitation_id"/>
+                    <field name="culture_id"/>
+                    <field name="surface"/>
+                    <field name="surface_calculee"/>
+                    <field name="unite_surface"/>
+                    <field name="state"/>
+                    <field name="derniere_intervention"/>
+                    
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="nom"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_top_right">
+                                            <field name="state" widget="label_selection" options="{'classes': {'draft': 'default', 'active': 'success', 'archived': 'danger'}}"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="o_kanban_record_body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <strong>Exploitation:</strong><br/>
+                                                <field name="exploitation_id"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <strong>Culture:</strong><br/>
+                                                <field name="culture_id"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mt-2">
+                                            <div class="col-6">
+                                                <strong>Surface:</strong><br/>
+                                                <field name="surface"/> <field name="unite_surface"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <strong>Calculée:</strong><br/>
+                                                <field name="surface_calculee"/> ha
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mt-2">
+                                            <div class="col-12">
+                                                <strong>Dernière intervention:</strong><br/>
+                                                <field name="derniere_intervention"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Action pour ouvrir la vue avec carte -->
+        <record id="action_parcelle_agri_map" model="ir.actions.act_window">
+            <field name="name">Créer Parcelle (Carte)</field>
+            <field name="res_model">parcelle.agri</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_parcelle_agri_form_map"/>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première parcelle en utilisant la carte interactive !
+                </p>
+                <p>
+                    Utilisez les outils de dessin pour créer des polygones représentant vos parcelles.
+                    La carte vous permettra de visualiser et modifier facilement la géométrie.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour ouvrir la vue normale -->
+        <record id="action_parcelle_agri" model="ir.actions.act_window">
+            <field name="name">Parcelles Agricoles</field>
+            <field name="res_model">parcelle.agri</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première parcelle agricole !
+                </p>
+                <p>
+                    Définissez les caractéristiques de vos parcelles : surface, culture, type de sol, etc.
+                </p>
+            </field>
+        </record>
+    </data>
 </odoo> 

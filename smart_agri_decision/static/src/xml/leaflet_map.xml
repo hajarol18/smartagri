@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="LeafletMapWidget">
+        <div class="o_leaflet_map_widget">
+            <div class="leaflet-map" style="height: 500px; width: 100%; border: 2px solid #ddd; border-radius: 8px;"></div>
+            <div class="leaflet-info mt-2">
+                <div class="alert alert-info">
+                    <i class="fa fa-info-circle"></i>
+                    <strong>Instructions:</strong>
+                    <ul class="mb-0 mt-1">
+                        <li>Cliquez sur "Dessiner" pour commencer à créer une parcelle</li>
+                        <li>Cliquez sur la carte pour ajouter des points</li>
+                        <li>Cliquez sur "Terminer" quand vous avez fini</li>
+                        <li>Une parcelle doit avoir au moins 3 points</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

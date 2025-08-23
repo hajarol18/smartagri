@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vue tableau de bord principal -->
+        <record id="view_dashboard_main" model="ir.ui.view">
+            <field name="name">dashboard.main</field>
+            <field name="model">dashboard.main</field>
+            <field name="arch" type="xml">
+                <kanban string="Tableau de Bord Smart Agri Decision" class="o_kanban_dashboard">
+                    <field name="name"/>
+                    <field name="type_dashboard"/>
+                    <field name="exploitation_id"/>
+                    <field name="derniere_mise_a_jour"/>
+                    
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <strong>Type:</strong> <field name="type_dashboard"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <strong>Exploitation:</strong> <field name="exploitation_id"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-12">
+                                                <small class="text-muted">
+                                                    Dernière mise à jour: <field name="derniere_mise_a_jour"/>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Vue tableau de bord météorologique -->
+        <record id="view_dashboard_meteo" model="ir.ui.view">
+            <field name="name">dashboard.meteo</field>
+            <field name="model">dashboard.meteo</field>
+            <field name="arch" type="xml">
+                <form string="Tableau de Bord Météorologique">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nom du tableau de bord"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Configuration">
+                                <field name="exploitation_id"/>
+                                <field name="periode_analyse"/>
+                                <field name="derniere_mise_a_jour"/>
+                                <field name="prochaine_mise_a_jour"/>
+                            </group>
+                            
+                            <group string="Paramètres d'affichage">
+                                <field name="unite_temperature"/>
+                                <field name="unite_precipitation"/>
+                                <field name="langue"/>
+                                <field name="theme"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Vue d'ensemble" name="vue_ensemble">
+                                <group>
+                                    <group string="Conditions actuelles">
+                                        <field name="temperature_actuelle"/>
+                                        <field name="humidite_actuelle"/>
+                                        <field name="precipitation_actuelle"/>
+                                        <field name="vent_actuel"/>
+                                    </group>
+                                    
+                                    <group string="Tendances">
+                                        <field name="tendance_temperature"/>
+                                        <field name="tendance_precipitation"/>
+                                        <field name="tendance_humidite"/>
+                                        <field name="tendance_vent"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group string="Alertes actives">
+                                        <field name="alertes_actives_count"/>
+                                        <field name="niveau_alerte_max"/>
+                                        <field name="derniere_alerte"/>
+                                    </group>
+                                    
+                                    <group string="Indices">
+                                        <field name="indice_uv"/>
+                                        <field name="indice_qualite_air"/>
+                                        <field name="indice_confort"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Prévisions" name="previsions">
+                                <group>
+                                    <group string="Prévisions à court terme (7 jours)">
+                                        <field name="previsions_7j"/>
+                                        <field name="confiance_previsions"/>
+                                        <field name="source_previsions"/>
+                                    </group>
+                                    
+                                    <group string="Prévisions saisonnières">
+                                        <field name="previsions_saisonnières"/>
+                                        <field name="anomalies_climatiques"/>
+                                        <field name="risques_climatiques"/>
+                                    </group>
+                                </group>
+                                
+                                <field name="graphique_previsions" widget="image" readonly="1"/>
+                            </page>
+                            
+                            <page string="Analyses" name="analyses">
+                                <group>
+                                    <group string="Statistiques">
+                                        <field name="temperature_moyenne"/>
+                                        <field name="temperature_min"/>
+                                        <field name="temperature_max"/>
+                                        <field name="precipitation_totale"/>
+                                    </group>
+                                    
+                                    <group string="Records">
+                                        <field name="record_temperature_max"/>
+                                        <field name="record_temperature_min"/>
+                                        <field name="record_precipitation"/>
+                                        <field name="record_vent"/>
+                                    </group>
+                                </group>
+                                
+                                <field name="graphique_statistiques" widget="image" readonly="1"/>
+                            </page>
+                            
+                            <page string="Cartes interactives" name="cartes_interactives">
+                                <group>
+                                    <group string="Carte météo">
+                                        <field name="carte_meteo" widget="image" readonly="1"/>
+                                        <field name="zoom_carte"/>
+                                        <field name="centre_carte"/>
+                                    </group>
+                                    
+                                    <group string="Carte des alertes">
+                                        <field name="carte_alertes" widget="image" readonly="1"/>
+                                        <field name="filtres_alertes"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group string="Carte des stations">
+                                        <field name="carte_stations" widget="image" readonly="1"/>
+                                        <field name="stations_actives"/>
+                                    </group>
+                                    
+                                    <group string="Carte des parcelles">
+                                        <field name="carte_parcelles" widget="image" readonly="1"/>
+                                        <field name="parcelles_surveillees"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Rapports" name="rapports">
+                                <group>
+                                    <group string="Rapports automatiques">
+                                        <field name="rapport_quotidien"/>
+                                        <field name="rapport_hebdomadaire"/>
+                                        <field name="rapport_mensuel"/>
+                                        <field name="rapport_saisonnier"/>
+                                    </group>
+                                    
+                                    <group string="Export">
+                                        <field name="format_export"/>
+                                        <field name="frequence_export"/>
+                                        <field name="destinataires"/>
+                                    </group>
+                                </group>
+                                
+                                <field name="derniers_rapports_ids">
+                                    <tree editable="bottom">
+                                        <field name="date_rapport"/>
+                                        <field name="type_rapport"/>
+                                        <field name="statut"/>
+                                        <field name="taille_fichier"/>
+                                        <field name="actions"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vue tableau de bord agricole -->
+        <record id="view_dashboard_agricole" model="ir.ui.view">
+            <field name="name">dashboard.agricole</field>
+            <field name="model">dashboard.agricole</field>
+            <field name="arch" type="xml">
+                <form string="Tableau de Bord Agricole">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nom du tableau de bord agricole"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Exploitation">
+                                <field name="exploitation_id"/>
+                                <field name="superficie_totale"/>
+                                <field name="nombre_parcelles"/>
+                                <field name="type_cultures"/>
+                            </group>
+                            
+                            <group string="Saison">
+                                <field name="saison_courante"/>
+                                <field name="phase_culture"/>
+                                <field name="jours_apres_semis"/>
+                                <field name="prochaine_intervention"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Rendements" name="rendements">
+                                <group>
+                                    <group string="Rendements actuels">
+                                        <field name="rendement_actuel"/>
+                                        <field name="rendement_precedent"/>
+                                        <field name="evolution_rendement"/>
+                                        <field name="objectif_rendement"/>
+                                    </group>
+                                    
+                                    <group string="Prédictions">
+                                        <field name="rendement_predit"/>
+                                        <field name="confiance_prediction"/>
+                                        <field name="facteurs_risque"/>
+                                        <field name="opportunites_amelioration"/>
+                                    </group>
+                                </group>
+                                
+                                <field name="graphique_rendements" widget="image" readonly="1"/>
+                            </page>
+                            
+                            <page string="Interventions" name="interventions">
+                                <group>
+                                    <group string="Interventions planifiées">
+                                        <field name="interventions_planifiees"/>
+                                        <field name="cout_interventions"/>
+                                        <field name="priorite_interventions"/>
+                                    </group>
+                                    
+                                    <group string="Interventions réalisées">
+                                        <field name="interventions_realisees"/>
+                                        <field name="efficacite_interventions"/>
+                                        <field name="retour_investissement"/>
+                                    </group>
+                                </group>
+                                
+                                <field name="calendrier_interventions" widget="image" readonly="1"/>
+                            </page>
+                            
+                            <page string="Ressources" name="ressources">
+                                <group>
+                                    <group string="Eau">
+                                        <field name="consommation_eau"/>
+                                        <field name="disponibilite_eau"/>
+                                        <field name="efficacite_irrigation"/>
+                                        <field name="stress_hydrique"/>
+                                    </group>
+                                    
+                                    <group string="Nutriments">
+                                        <field name="azote_sol"/>
+                                        <field name="phosphore_sol"/>
+                                        <field name="potassium_sol"/>
+                                        <field name="ph_sol"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group string="Énergie">
+                                        <field name="consommation_energie"/>
+                                        <field name="sources_energie"/>
+                                        <field name="efficacite_energetique"/>
+                                    </group>
+                                    
+                                    <group string="Main d'œuvre">
+                                        <field name="heures_travail"/>
+                                        <field name="productivite_travail"/>
+                                        <field name="cout_main_oeuvre"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Qualité" name="qualite">
+                                <group>
+                                    <group string="Qualité des produits">
+                                        <field name="indice_qualite"/>
+                                        <field name="conformite_standards"/>
+                                        <field name="defauts_detectes"/>
+                                        <field name="satisfaction_clients"/>
+                                    </group>
+                                    
+                                    <group string="Certifications">
+                                        <field name="certifications_obtenues"/>
+                                        <field name="audits_realises"/>
+                                        <field name="conformite_reglementaire"/>
+                                    </group>
+                                </group>
+                                
+                                <field name="graphique_qualite" widget="image" readonly="1"/>
+                            </page>
+                            
+                            <page string="Durabilité" name="durabilite">
+                                <group>
+                                    <group string="Impact environnemental">
+                                        <field name="emissions_co2"/>
+                                        <field name="utilisation_pesticides"/>
+                                        <field name="gestion_dechets"/>
+                                        <field name="biodiversite"/>
+                                    </group>
+                                    
+                                    <group string="Pratiques durables">
+                                        <field name="agriculture_conservation"/>
+                                        <field name="rotation_cultures"/>
+                                        <field name="couverture_sol"/>
+                                        <field name="gestion_integree"/>
+                                    </group>
+                                </group>
+                                
+                                <field name="indicateurs_durabilite" widget="image" readonly="1"/>
+                            </page>
+                        </notebook>
+                        
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Actions pour les tableaux de bord -->
+        <record id="action_dashboard_main" model="ir.actions.act_window">
+            <field name="name">Tableaux de Bord</field>
+            <field name="res_model">dashboard.main</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_id" ref="view_dashboard_main"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier tableau de bord
+                </p>
+                <p>
+                    Les tableaux de bord vous permettent de visualiser et analyser 
+                    toutes les données de votre exploitation agricole.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_dashboard_meteo" model="ir.actions.act_window">
+            <field name="name">Tableau de Bord Météo</field>
+            <field name="res_model">dashboard.meteo</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_dashboard_meteo"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Configurez votre tableau de bord météorologique
+                </p>
+                <p>
+                    Visualisez les conditions météo, prévisions et alertes 
+                    avec des cartes interactives et graphiques.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_dashboard_agricole" model="ir.actions.act_window">
+            <field name="name">Tableau de Bord Agricole</field>
+            <field name="res_model">dashboard.agricole</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_dashboard_agricole"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Configurez votre tableau de bord agricole
+                </p>
+                <p>
+                    Suivez les rendements, interventions et ressources 
+                    de votre exploitation avec des indicateurs clés.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

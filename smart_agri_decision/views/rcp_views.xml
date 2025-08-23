@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vue liste pour les scénarios RCP -->
+        <record id="view_rcp_scenario_list" model="ir.ui.view">
+            <field name="name">rcp.scenario.list</field>
+            <field name="model">rcp.scenario</field>
+            <field name="arch" type="xml">
+                <tree string="Scénarios RCP IPCC" decoration-info="state == 'draft'" decoration-success="state == 'active'" decoration-warning="state == 'archived'">
+                    <field name="name"/>
+                    <field name="rcp_type"/>
+                    <field name="annee_debut"/>
+                    <field name="annee_fin"/>
+                    <field name="temperature_rise" widget="float_time" options="{'factor': 1}"/>
+                    <field name="co2_concentration"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'active'" decoration-warning="state == 'archived'"/>
+                    <field name="exploitation_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vue formulaire pour les scénarios RCP -->
+        <record id="view_rcp_scenario_form" model="ir.ui.view">
+            <field name="name">rcp.scenario.form</field>
+            <field name="model">rcp.scenario</field>
+            <field name="arch" type="xml">
+                <form string="Scénario RCP IPCC">
+                    <header>
+                        <button name="action_activer" type="object" string="Activer" class="btn-primary" 
+                                states="draft" help="Activer ce scénario climatique"/>
+                        <button name="action_archiver" type="object" string="Archiver" 
+                                states="active" help="Archiver ce scénario"/>
+                        <button name="action_dupliquer" type="object" string="Dupliquer" 
+                                help="Créer une copie de ce scénario"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,active,archived"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nom du scénario RCP"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Informations générales">
+                                <field name="rcp_type"/>
+                                <field name="description"/>
+                                <field name="exploitation_id"/>
+                                <field name="parcelle_id"/>
+                            </group>
+                            
+                            <group string="Période d'étude">
+                                <field name="annee_debut"/>
+                                <field name="annee_fin"/>
+                                <field name="duree_etude" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Paramètres climatiques" name="parametres_climatiques">
+                                <group>
+                                    <group string="Températures">
+                                        <field name="temperature_rise" widget="float_time" options="{'factor': 1}"/>
+                                        <field name="temperature_min_change"/>
+                                        <field name="temperature_max_change"/>
+                                        <field name="temperature_optimum"/>
+                                    </group>
+                                    
+                                    <group string="Gaz à effet de serre">
+                                        <field name="co2_concentration"/>
+                                        <field name="ch4_concentration"/>
+                                        <field name="n2o_concentration"/>
+                                        <field name="forcage_radiatif"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group string="Précipitations">
+                                        <field name="precipitation_change"/>
+                                        <field name="intensite_pluie_change"/>
+                                        <field name="frequence_secheresse"/>
+                                    </group>
+                                    
+                                    <group string="Autres paramètres">
+                                        <field name="humidite_change"/>
+                                        <field name="vent_change"/>
+                                        <field name="ensoleillement_change"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Impacts agricoles" name="impacts_agricoles">
+                                <group>
+                                    <group string="Stress hydrique">
+                                        <field name="stress_hydrique_rcp"/>
+                                        <field name="evapotranspiration_change"/>
+                                        <field name="reserve_eau_change"/>
+                                    </group>
+                                    
+                                    <group string="Stress thermique">
+                                        <field name="stress_thermique_rcp"/>
+                                        <field name="degres_jour_change"/>
+                                        <field name="periode_vegetation_change"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group string="Rendements">
+                                        <field name="rendement_change"/>
+                                        <field name="qualite_produit_change"/>
+                                        <field name="risque_perte"/>
+                                    </group>
+                                    
+                                    <group string="Adaptation">
+                                        <field name="strategies_adaptation"/>
+                                        <field name="cout_adaptation"/>
+                                        <field name="efficacite_adaptation"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Données temporelles" name="donnees_temporelles">
+                                <field name="donnees_annuelles_ids">
+                                    <tree editable="bottom">
+                                        <field name="annee"/>
+                                        <field name="temperature_moyenne"/>
+                                        <field name="precipitation_totale"/>
+                                        <field name="stress_hydrique"/>
+                                        <field name="stress_thermique"/>
+                                        <field name="rendement_projete"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            
+                            <page string="Graphiques et analyses" name="graphiques_analyses">
+                                <group>
+                                    <field name="graphique_temperature" widget="image" readonly="1"/>
+                                    <field name="graphique_precipitation" widget="image" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="graphique_stress" widget="image" readonly="1"/>
+                                    <field name="graphique_rendement" widget="image" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                        
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vue recherche pour les scénarios RCP -->
+        <record id="view_rcp_scenario_search" model="ir.ui.view">
+            <field name="name">rcp.scenario.search</field>
+            <field name="model">rcp.scenario</field>
+            <field name="arch" type="xml">
+                <search string="Recherche Scénarios RCP">
+                    <field name="name"/>
+                    <field name="rcp_type"/>
+                    <field name="exploitation_id"/>
+                    <field name="parcelle_id"/>
+                    
+                    <filter string="RCP 2.6 (Optimiste)" name="rcp_26" domain="[('rcp_type', '=', 'rcp_26')]"/>
+                    <filter string="RCP 4.5 (Intermédiaire)" name="rcp_45" domain="[('rcp_type', '=', 'rcp_45')]"/>
+                    <filter string="RCP 6.0 (Intermédiaire-élevé)" name="rcp_60" domain="[('rcp_type', '=', 'rcp_60')]"/>
+                    <filter string="RCP 8.5 (Pessimiste)" name="rcp_85" domain="[('rcp_type', '=', 'rcp_85')]"/>
+                    
+                    <filter string="Scénarios actifs" name="actifs" domain="[('state', '=', 'active')]"/>
+                    <filter string="Scénarios en brouillon" name="brouillons" domain="[('state', '=', 'draft')]"/>
+                    
+                    <filter string="Période 2020-2050" name="periode_2020_2050" domain="[('annee_debut', '>=', 2020), ('annee_fin', '&lt;=', 2050)]"/>
+                    <filter string="Période 2050-2100" name="periode_2050_2100" domain="[('annee_debut', '>=', 2050), ('annee_fin', '&lt;=', 2100)]"/>
+                    
+                    <group expand="0" string="Regrouper par">
+                        <filter string="Type RCP" name="group_rcp_type" context="{'group_by': 'rcp_type'}"/>
+                        <filter string="Exploitation" name="group_exploitation" context="{'group_by': 'exploitation_id'}"/>
+                        <filter string="État" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Année de début" name="group_annee_debut" context="{'group_by': 'annee_debut'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action pour les scénarios RCP -->
+        <record id="action_rcp_scenarios" model="ir.actions.act_window">
+            <field name="name">Scénarios RCP IPCC</field>
+            <field name="res_model">rcp.scenario</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_rcp_scenario_list"/>
+            <field name="search_view_id" ref="view_rcp_scenario_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier scénario climatique RCP IPCC
+                </p>
+                <p>
+                    Les scénarios RCP (Representative Concentration Pathways) permettent de modéliser 
+                    l'évolution du climat selon différents niveaux d'émissions de gaz à effet de serre.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour créer un nouveau scénario RCP -->
+        <record id="action_rcp_scenario_create" model="ir.actions.act_window">
+            <field name="name">Nouveau Scénario RCP</field>
+            <field name="res_model">rcp.scenario</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_rcp_scenario_form"/>
+            <field name="target">new</field>
+            <field name="context">{'default_state': 'draft'}</field>
+        </record>
+
+        <!-- Action pour analyser les scénarios RCP -->
+        <record id="action_rcp_analysis" model="ir.actions.act_window">
+            <field name="name">Analyse des Scénarios RCP</field>
+            <field name="res_model">rcp.scenario</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_rcp_scenario_list"/>
+            <field name="domain">[('state', '=', 'active')]</field>
+            <field name="context">{'search_default_actifs': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Analysez l'impact des scénarios climatiques sur vos exploitations
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

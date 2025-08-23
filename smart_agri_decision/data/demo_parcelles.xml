@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Données de démonstration pour les parcelles avec géométrie -->
+        
+        <!-- Parcelle 1: Champ de blé -->
+        <record id="demo_parcelle_ble" model="parcelle.agri">
+            <field name="nom">Champ de Blé - Nord</field>
+            <field name="code_parcelle">BLE001</field>
+            <field name="exploitation_id" ref="demo_exploitation_soleil"/>
+            <field name="culture_id" ref="demo_culture_ble"/>
+            <field name="surface">2.5</field>
+            <field name="surface_calculee">2.47</field>
+            <field name="unite_surface">ha</field>
+            <field name="latitude">48.8566</field>
+            <field name="longitude">2.3522</field>
+            <field name="altitude">35</field>
+            <field name="coordonnees_gps">48.8566, 2.3522</field>
+            <field name="geometrie_parcelle">48.8566,2.3522;48.8576,2.3522;48.8576,2.3532;48.8566,2.3532</field>
+            <field name="type_sol">limoneux</field>
+            <field name="ph_sol">6.8</field>
+            <field name="materiau_organique">2.5</field>
+            <field name="capacite_retention_eau">150</field>
+            <field name="systeme_irrigation">aspersion</field>
+            <field name="besoin_eau">3.2</field>
+            <field name="efficacite_irrigation">85</field>
+            <field name="systeme_drainage">naturel</field>
+            <field name="rotation_culture">annuelle</field>
+            <field name="densite_plantation">400</field>
+            <field name="espacement_rangs">15</field>
+            <field name="espacement_plantes">2.5</field>
+            <field name="date_plantation">2024-10-15</field>
+            <field name="date_recolte_prevue">2025-07-20</field>
+            <field name="derniere_intervention">2024-11-20</field>
+            <field name="prochaine_intervention">2025-03-15</field>
+            <field name="notes">Parcelle bien drainée, bon potentiel de rendement</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Parcelle 2: Champ de maïs -->
+        <record id="demo_parcelle_mais" model="parcelle.agri">
+            <field name="nom">Champ de Maïs - Est</field>
+            <field name="code_parcelle">MAIS001</field>
+            <field name="exploitation_id" ref="demo_exploitation_soleil"/>
+            <field name="culture_id" ref="demo_culture_mais"/>
+            <field name="surface">3.2</field>
+            <field name="surface_calculee">3.18</field>
+            <field name="unite_surface">ha</field>
+            <field name="latitude">48.8570</field>
+            <field name="longitude">2.3530</field>
+            <field name="altitude">38</field>
+            <field name="coordonnees_gps">48.8570, 2.3530</field>
+            <field name="geometrie_parcelle">48.8570,2.3530;48.8580,2.3530;48.8580,2.3540;48.8570,2.3540</field>
+            <field name="type_sol">argileux</field>
+            <field name="ph_sol">7.2</field>
+            <field name="materiau_organique">3.1</field>
+            <field name="capacite_retention_eau">180</field>
+            <field name="systeme_irrigation">goutte_goutte</field>
+            <field name="besoin_eau">4.5</field>
+            <field name="efficacite_irrigation">92</field>
+            <field name="systeme_drainage">tuyaux</field>
+            <field name="rotation_culture">bienale</field>
+            <field name="densite_plantation">65000</field>
+            <field name="espacement_rangs">75</field>
+            <field name="espacement_plantes">18</field>
+            <field name="date_plantation">2025-04-20</field>
+            <field name="date_recolte_prevue">2025-09-15</field>
+            <field name="derniere_intervention">2025-05-15</field>
+            <field name="prochaine_intervention">2025-06-20</field>
+            <field name="notes">Sol argileux, bonnes conditions pour le maïs</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Parcelle 3: Vignoble -->
+        <record id="demo_parcelle_vigne" model="parcelle.agri">
+            <field name="nom">Vignoble - Coteau Sud</field>
+            <field name="code_parcelle">VIGNE001</field>
+            <field name="exploitation_id" ref="demo_exploitation_soleil"/>
+            <field name="culture_id" ref="demo_culture_vigne"/>
+            <field name="surface">1.8</field>
+            <field name="surface_calculee">1.76</field>
+            <field name="unite_surface">ha</field>
+            <field name="latitude">48.8550</field>
+            <field name="longitude">2.3510</field>
+            <field name="altitude">45</field>
+            <field name="coordonnees_gps">48.8550, 2.3510</field>
+            <field name="geometrie_parcelle">48.8550,2.3510;48.8560,2.3510;48.8560,2.3520;48.8550,2.3520</field>
+            <field name="type_sol">calcaire</field>
+            <field name="ph_sol">8.1</field>
+            <field name="materiau_organique">1.8</field>
+            <field name="capacite_retention_eau">120</field>
+            <field name="systeme_irrigation">aucun</field>
+            <field name="besoin_eau">2.8</field>
+            <field name="efficacite_irrigation">0</field>
+            <field name="systeme_drainage">naturel</field>
+            <field name="rotation_culture">permanente</field>
+            <field name="densite_plantation">5000</field>
+            <field name="espacement_rangs">200</field>
+            <field name="espacement_plantes">100</field>
+            <field name="date_plantation">2020-03-15</field>
+            <field name="date_recolte_prevue">2025-09-25</field>
+            <field name="derniere_intervention">2025-06-10</field>
+            <field name="prochaine_intervention">2025-08-15</field>
+            <field name="notes">Vignoble en coteau, exposition sud, excellent terroir</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Parcelle 4: Prairie -->
+        <record id="demo_parcelle_prairie" model="parcelle.agri">
+            <field name="nom">Prairie - Zone Humide</field>
+            <field name="code_parcelle">PRAIRIE001</field>
+            <field name="exploitation_id" ref="demo_exploitation_soleil"/>
+            <field name="culture_id" ref="demo_culture_prairie"/>
+            <field name="surface">4.5</field>
+            <field name="surface_calculee">4.52</field>
+            <field name="unite_surface">ha</field>
+            <field name="latitude">48.8580</field>
+            <field name="longitude">2.3500</field>
+            <field name="altitude">32</field>
+            <field name="coordonnees_gps">48.8580, 2.3500</field>
+            <field name="geometrie_parcelle">48.8580,2.3500;48.8590,2.3500;48.8590,2.3510;48.8580,2.3510</field>
+            <field name="type_sol">humifere</field>
+            <field name="ph_sol">6.5</field>
+            <field name="materiau_organique">4.2</field>
+            <field name="capacite_retention_eau">200</field>
+            <field name="systeme_irrigation">gravitaire</field>
+            <field name="besoin_eau">2.1</field>
+            <field name="efficacite_irrigation">78</field>
+            <field name="systeme_drainage">fosses</field>
+            <field name="rotation_culture">permanente</field>
+            <field name="densite_plantation">0</field>
+            <field name="espacement_rangs">0</field>
+            <field name="espacement_plantes">0</field>
+            <field name="date_plantation">2020-04-01</field>
+            <field name="date_recolte_prevue">2025-06-15</field>
+            <field name="derniere_intervention">2025-05-20</field>
+            <field name="prochaine_intervention">2025-07-10</field>
+            <field name="notes">Prairie naturelle, zone humide, pâturage extensif</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Parcelle 5: Verger -->
+        <record id="demo_parcelle_verger" model="parcelle.agri">
+            <field name="nom">Verger - Pommiers</field>
+            <field name="code_parcelle">VERGER001</field>
+            <field name="exploitation_id" ref="demo_exploitation_soleil"/>
+            <field name="culture_id" ref="demo_culture_pommier"/>
+            <field name="surface">2.8</field>
+            <field name="surface_calculee">2.81</field>
+            <field name="unite_surface">ha</field>
+            <field name="latitude">48.8560</field>
+            <field name="longitude">2.3540</field>
+            <field name="altitude">40</field>
+            <field name="coordonnees_gps">48.8560, 2.3540</field>
+            <field name="geometrie_parcelle">48.8560,2.3540;48.8570,2.3540;48.8570,2.3550;48.8560,2.3550</field>
+            <field name="type_sol">loameux</field>
+            <field name="ph_sol">6.9</field>
+            <field name="materiau_organique">2.9</field>
+            <field name="capacite_retention_eau">160</field>
+            <field name="systeme_irrigation">micro_aspersion</field>
+            <field name="besoin_eau">3.8</field>
+            <field name="efficacite_irrigation">88</field>
+            <field name="systeme_drainage">drains</field>
+            <field name="rotation_culture">permanente</field>
+            <field name="densite_plantation">400</field>
+            <field name="espacement_rangs">600</field>
+            <field name="espacement_plantes">600</field>
+            <field name="date_plantation">2018-11-15</field>
+            <field name="date_recolte_prevue">2025-09-30</field>
+            <field name="derniere_intervention">2025-03-20</field>
+            <field name="prochaine_intervention">2025-06-25</field>
+            <field name="notes">Verger de pommiers, variétés anciennes, agriculture biologique</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Historique des parcelles -->
+        <record id="demo_historique_parcelle_ble" model="parcelle.historique">
+            <field name="parcelle_id" ref="demo_parcelle_ble"/>
+            <field name="date">2024-10-15</field>
+            <field name="action">creation</field>
+            <field name="details">Parcelle créée pour la culture du blé d'hiver</field>
+            <field name="utilisateur_id" ref="base.user_admin"/>
+        </record>
+
+        <record id="demo_historique_parcelle_mais" model="parcelle.historique">
+            <field name="parcelle_id" ref="demo_parcelle_mais"/>
+            <field name="date">2025-04-20</field>
+            <field name="action">plantation</field>
+            <field name="details">Plantation du maïs en conditions optimales</field>
+            <field name="utilisateur_id" ref="base.user_admin"/>
+        </record>
+
+        <record id="demo_historique_parcelle_vigne" model="parcelle.historique">
+            <field name="parcelle_id" ref="demo_parcelle_vigne"/>
+            <field name="date">2025-06-10</field>
+            <field name="action">intervention</field>
+            <field name="details">Taille en vert et effeuillage pour optimiser l'exposition</field>
+            <field name="utilisateur_id" ref="base.user_admin"/>
+        </record>
+    </data>
+</odoo>
