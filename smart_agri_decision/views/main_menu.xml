@@ -17,13 +17,6 @@
               name="Interventions"
               action="project.project_project_all_action"/>
 
-    <!-- Menu IA -->
-    <menuitem id="menu_ai_root" parent="menu_sad_root" name="🤖 IA &amp; Aide à la décision"/>
-    <menuitem id="menu_ai_scenarios"
-              parent="menu_ai_root"
-              name="Scénarios RCP"
-              action="action_scenario_rcp"/>
-    
     <!-- Menu Exploitations -->
     <menuitem id="menu_exploitations"
               parent="menu_sad_root"
@@ -35,4 +28,11 @@
               parent="menu_sad_root"
               name="📦 Intrants"
               action="action_intrant_agri"/>
+
+    <!-- Menu IA -->
+    <menuitem id="menu_ai_root" parent="menu_sad_root" name="🤖 IA &amp; Aide à la décision"/>
+    <menuitem id="menu_ai_scenarios"
+              parent="menu_ai_root"
+              name="Scénarios RCP"
+              action="action_scenario_rcp"/>
 </odoo> 

@@ -8,6 +8,8 @@
         "views/intrants_views.xml",
         "views/intervention_views.xml",
         "views/scenario_views.xml",
+        "views/scenario_climatique_views.xml",
+        "views/actions.xml",
         "views/main_menu.xml",
         "data/demo_data.xml",
     ],
