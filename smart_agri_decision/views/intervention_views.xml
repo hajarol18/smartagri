@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Vue formulaire pour intervention.agri -->
+    <!-- Vue formulaire pour intervention.agri (version simple pour test) -->
     <record id="view_intervention_form" model="ir.ui.view">
         <field name="name">intervention.agri.form</field>
         <field name="model">intervention.agri</field>
@@ -8,31 +8,18 @@
             <form string="Intervention Agricole">
                 <sheet>
                     <group>
-                        <group string="Informations générales">
-                            <field name="name"/>
+                        <group string="Informations agricoles">
                             <field name="type_intervention"/>
-                            <field name="exploitation_id"/>
+                            <field name="cout_estime"/>
+                            <field name="duree_estimee"/>
                         </group>
-                        <group string="Localisation">
-                            <field name="parcelle_id"/>
-                            <field name="culture_id"/>
-                        </group>
-                    </group>
-                    <group>
                         <group string="Planification">
                             <field name="date_deadline"/>
-                            <field name="duree_estimee"/>
-                            <field name="cout_estime"/>
-                        </group>
-                        <group string="État">
+                            <field name="user_id"/>
                             <field name="stage_id"/>
-                            <field name="priority"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Intrants utilisés">
-                            <field name="intrants_ids"/>
-                        </page>
                         <page string="Description">
                             <field name="description"/>
                         </page>
@@ -50,11 +37,9 @@
             <tree string="Interventions Agricoles">
                 <field name="name"/>
                 <field name="type_intervention"/>
-                <field name="exploitation_id"/>
-                <field name="parcelle_id"/>
-                <field name="date_deadline"/>
                 <field name="stage_id"/>
-                <field name="priority"/>
+                <field name="user_id"/>
+                <field name="date_deadline"/>
             </tree>
         </field>
     </record>
@@ -69,8 +54,8 @@
                 Créez votre première intervention agricole !
             </p>
             <p>
-                Les interventions agricoles comprennent toutes les actions nécessaires
-                à la conduite des cultures : semis, irrigation, fertilisation, etc.
+                Une intervention agricole représente une tâche à effectuer
+                sur une parcelle avec des ressources spécifiques.
             </p>
         </field>
     </record>

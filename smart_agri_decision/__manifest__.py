@@ -1,7 +1,7 @@
 {
     "name": "Smart Agri Decision",
     "version": "1.0",
-    "depends": ["base", "stock", "product", "project"],
+    "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",
         "views/exploitation_views.xml",
@@ -15,4 +15,6 @@
         "data/demo_data.xml",
     ],
     "application": True,
+    "installable": True,
+    "auto_install": False,
 }

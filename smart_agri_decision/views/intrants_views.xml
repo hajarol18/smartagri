@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Vue formulaire pour intrant.agri -->
+    <!-- Vue formulaire pour intrant.agri (version simple pour test) -->
     <record id="view_intrant_form" model="ir.ui.view">
         <field name="name">intrant.agri.form</field>
         <field name="model">intrant.agri</field>
@@ -11,11 +11,11 @@
                         <group string="Informations générales">
                             <field name="name"/>
                             <field name="type_intrant"/>
-                            <field name="exploitation_id"/>
+                            <field name="stock_minimum"/>
                         </group>
                         <group string="Stock">
-                            <field name="stock_minimum"/>
                             <field name="qty_available" readonly="1"/>
+                            <field name="list_price"/>
                         </group>
                     </group>
                 </sheet>
@@ -31,9 +31,9 @@
             <tree string="Intrants Agricoles">
                 <field name="name"/>
                 <field name="type_intrant"/>
-                <field name="exploitation_id"/>
-                <field name="stock_minimum"/>
                 <field name="qty_available"/>
+                <field name="stock_minimum"/>
+                <field name="list_price"/>
             </tree>
         </field>
     </record>
@@ -48,8 +48,8 @@
                 Créez votre premier intrant agricole !
             </p>
             <p>
-                Les intrants agricoles comprennent les semences, engrais, pesticides
-                et autres ressources nécessaires à la production agricole.
+                Un intrant agricole représente une ressource nécessaire
+                à la production : semences, engrais, pesticides, etc.
             </p>
         </field>
     </record>
