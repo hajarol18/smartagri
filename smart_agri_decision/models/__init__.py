@@ -3,3 +3,15 @@ from . import intrants_ressources
 from . import intervention
 from . import scenario_climatique
 from . import meteo_data
+from . import culture
+from . import parcelle
+from . import meteo
+from . import rcp_scenarios
+from . import ia_predictions
+from . import dashboard_agricole
+from . import dashboard_meteo
+from . import dashboard_main
+from . import ia_model
+from . import ia_prediction
+from . import rcp_scenario
+from . import scenario_climatique
