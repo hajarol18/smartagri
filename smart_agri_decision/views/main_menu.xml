@@ -1,38 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Menu racine personnalisé -->
-    <menuitem id="menu_sad_root" name="Smart Agri Decision"/>
+    <!-- Menu principal Smart Agri Decision -->
+    <menuitem id="menu_smart_agri_root" 
+              name="Smart Agri Decision" 
+              sequence="10"/>
 
-    <!-- Sous-menu Stock/Product/Project -->
-    <menuitem id="menu_sad_stock"
-              parent="menu_sad_root"
-              name="Gestion de stock"
-              action="stock.menu_stock_root"/>
-    <menuitem id="menu_sad_products"
-              parent="menu_sad_stock"
-              name="Produits"
-              action="product.product_template_action"/>
-    <menuitem id="menu_sad_tasks"
-              parent="menu_sad_root"
-              name="Interventions"
-              action="project.project_project_all_action"/>
+    <!-- Gestion de stock -->
+    <menuitem id="menu_stock_main" 
+              name="Gestion de Stock" 
+              parent="menu_smart_agri_root" 
+              sequence="10"/>
 
-    <!-- Menu Exploitations -->
-    <menuitem id="menu_exploitations"
-              parent="menu_sad_root"
-              name="🏡 Exploitations"
-              action="action_exploitation_agri"/>
-              
-    <!-- Menu Intrants -->
-    <menuitem id="menu_intrants"
-              parent="menu_sad_root"
-              name="📦 Intrants"
-              action="action_intrant_agri"/>
+    <menuitem id="menu_stock_products" 
+              name="Produits" 
+              parent="menu_stock_main" 
+              action="product.product_template_action_all" 
+              sequence="10"/>
 
-    <!-- Menu IA -->
-    <menuitem id="menu_ai_root" parent="menu_sad_root" name="🤖 IA &amp; Aide à la décision"/>
-    <menuitem id="menu_ai_scenarios"
-              parent="menu_ai_root"
-              name="Scénarios RCP"
-              action="action_scenario_rcp"/>
+    <menuitem id="menu_stock_operations" 
+              name="Opérations de Stock" 
+              parent="menu_stock_main" 
+              action="stock.action_picking_type_list" 
+              sequence="20"/>
+
+    <menuitem id="menu_stock_inventory" 
+              name="Inventaires" 
+              parent="menu_stock_main" 
+              action="stock.action_inventory_form" 
+              sequence="30"/>
+
+    <!-- Produits -->
+    <menuitem id="menu_products_main" 
+              name="Produits" 
+              parent="menu_smart_agri_root" 
+              sequence="20"/>
+
+    <menuitem id="menu_products_categories" 
+              name="Catégories" 
+              parent="menu_products_main" 
+              action="product.product_category_action" 
+              sequence="10"/>
+
+    <menuitem id="menu_products_attributes" 
+              name="Attributs" 
+              parent="menu_products_main" 
+              action="product.product_attribute_action" 
+              sequence="20"/>
+
+    <!-- Interventions -->
+    <menuitem id="menu_interventions_main" 
+              name="Interventions" 
+              parent="menu_smart_agri_root" 
+              sequence="30"/>
+
+    <menuitem id="menu_interventions_tasks" 
+              name="Tâches" 
+              parent="menu_interventions_main" 
+              action="project.action_view_task" 
+              sequence="10"/>
+
+    <menuitem id="menu_interventions_projects" 
+              name="Projets" 
+              parent="menu_interventions_main" 
+              action="project.open_view_project_all" 
+              sequence="20"/>
+
+    <!-- Exploitations -->
+    <menuitem id="menu_exploitations_main" 
+              name="Exploitations" 
+              parent="menu_smart_agri_root" 
+              sequence="40"/>
+
+    <menuitem id="menu_exploitations_list" 
+              name="Liste des Exploitations" 
+              parent="menu_exploitations_main" 
+              action="action_exploitation_agri" 
+              sequence="10"/>
+
+    <menuitem id="menu_exploitations_partners" 
+              name="Partenaires" 
+              parent="menu_exploitations_main" 
+              action="base.action_partner_form" 
+              sequence="20"/>
+
+    <!-- Intrants -->
+    <menuitem id="menu_intrants_main" 
+              name="Intrants" 
+              parent="menu_smart_agri_root" 
+              sequence="50"/>
+
+    <menuitem id="menu_intrants_list" 
+              name="Liste des Intrants" 
+              parent="menu_intrants_main" 
+              action="action_intrant_agri" 
+              sequence="10"/>
+
+    <menuitem id="menu_intrants_suppliers" 
+              name="Fournisseurs" 
+              parent="menu_intrants_main" 
+              action="base.action_partner_supplier_form" 
+              sequence="20"/>
+
+    <!-- IA & Aide à la décision -->
+    <menuitem id="menu_ia_main" 
+              name="IA &amp; Aide à la Décision" 
+              parent="menu_smart_agri_root" 
+              sequence="60"/>
+
+    <!-- Scénarios RCP -->
+    <menuitem id="menu_scenarios_rcp" 
+              name="Scénarios RCP IPCC" 
+              parent="menu_ia_main" 
+              action="action_scenario_rcp" 
+              sequence="10"/>
+
+    <!-- Données météo -->
+    <menuitem id="menu_meteo" 
+              name="☀️ Données météo" 
+              parent="menu_ia_main" 
+              action="action_meteo_data" 
+              sequence="20"/>
+
+    <!-- Tendances climatiques -->
+    <menuitem id="menu_tendances" 
+              name="📈 Tendances climatiques" 
+              parent="menu_ia_main" 
+              action="action_tendances_climatiques" 
+              sequence="30"/>
+
+    <!-- Alertes météo -->
+    <menuitem id="menu_alertes" 
+              name="🚨 Alertes climatiques" 
+              parent="menu_ia_main" 
+              action="action_alertes_meteo" 
+              sequence="40"/>
+
+    <!-- Modèles IA -->
+    <menuitem id="menu_ia_models" 
+              name="🤖 Modèles IA" 
+              parent="menu_ia_main" 
+              action="action_ia_models" 
+              sequence="50"/>
+
+    <!-- Prédictions IA -->
+    <menuitem id="menu_ia_predictions" 
+              name="🔮 Prédictions IA" 
+              parent="menu_ia_main" 
+              action="action_ia_prediction" 
+              sequence="60"/>
+
+    <!-- Tableaux de bord -->
+    <menuitem id="menu_dashboard_main" 
+              name="Tableaux de Bord" 
+              parent="menu_smart_agri_root" 
+              sequence="70"/>
+
+    <!-- Tableau de bord principal -->
+    <menuitem id="menu_dashboard_principal" 
+              name="📊 Tableau de bord principal" 
+              parent="menu_dashboard_main" 
+              action="action_dashboard_main" 
+              sequence="10"/>
+
+    <!-- Tableau de bord météo -->
+    <menuitem id="menu_dashboard_meteo" 
+              name="🌤️ Tableau de bord météo" 
+              parent="menu_dashboard_main" 
+              action="action_dashboard_meteo" 
+              sequence="20"/>
+
+    <!-- Tableau de bord agricole -->
+    <menuitem id="menu_dashboard_agricole" 
+              name="🌾 Tableau de bord agricole" 
+              parent="menu_dashboard_main" 
+              action="action_dashboard_agricole" 
+              sequence="30"/>
+
+    <!-- Rapports -->
+    <menuitem id="menu_rapports" 
+              name="📋 Rapports" 
+              parent="menu_dashboard_main" 
+              action="action_dashboard_rapport" 
+              sequence="40"/>
 </odoo> 

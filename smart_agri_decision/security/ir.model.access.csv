@@ -11,8 +11,8 @@ access_intervention_agri_user,access.intervention.agri.user,model_intervention_a
 access_intervention_agri_manager,access.intervention.agri.manager,model_intervention_agri,base.group_system,1,1,1,1
 access_intrant_agri_user,access.intrant.agri.user,model_intrant_agri,base.group_user,1,1,1,0
 access_intrant_agri_manager,access.intrant.agri.manager,model_intrant_agri,base.group_system,1,1,1,1
-access_meteo_data_user,access.meteo.data.user,model_meteo_data,base.group_user,1,1,1,1
-access_meteo_data_manager,meteo.data.manager,model_meteo_data,base.group_system,1,1,1,1
+access_meteo_data_user,access.meteo.data.user,model_meteo_data,base.group_user,1,1,1,0
+access_meteo_data_manager,access.meteo.data.manager,model_meteo_data,base.group_system,1,1,1,1
 access_rcp_scenario_user,access.rcp.scenario.user,model_rcp_scenario,base.group_user,1,1,1,1
 access_rcp_scenario_manager,rcp.scenario.manager,model_rcp_scenario,base.group_system,1,1,1,1
 access_rcp_donnee_annuelle_user,access.rcp.donnee.annuelle.user,model_rcp_donnee_annuelle,base.group_user,1,1,1,1

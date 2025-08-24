@@ -1,233 +1,297 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
-        <!-- Actions pour les scénarios RCP -->
-        <record id="action_rcp_scenarios" model="ir.actions.act_window">
-            <field name="name">Scénarios RCP IPCC</field>
-            <field name="res_model">rcp.scenario</field>
-            <field name="view_mode">tree,form,kanban,graph</field>
-            <field name="view_id" ref="view_rcp_scenario_list"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Créez votre premier scénario RCP IPCC !
-                </p>
-                <p>
-                    Les scénarios RCP (Representative Concentration Pathways) permettent de modéliser 
-                    l'évolution du climat selon différents niveaux d'émissions de gaz à effet de serre.
-                </p>
-            </field>
-        </record>
+    <!-- Action pour les données météo -->
+    <record id="action_meteo_data" model="ir.actions.act_window">
+        <field name="name">Données Météorologiques</field>
+        <field name="res_model">meteo.data</field>
+        <field name="view_mode">tree,form,kanban,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Importez vos premières données météorologiques !
+            </p>
+            <p>
+                Collectez et analysez les données météo : températures, précipitations, 
+                humidité, vent et rayonnement solaire pour vos parcelles.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour les modèles IA -->
-        <record id="action_ia_models" model="ir.actions.act_window">
-            <field name="name">Modèles d'Intelligence Artificielle</field>
-            <field name="res_model">ia.model</field>
-            <field name="view_mode">tree,form,kanban,graph</field>
-            <field name="view_id" ref="view_ia_model_list"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Créez votre premier modèle d'Intelligence Artificielle !
-                </p>
-                <p>
-                    Les modèles IA permettent de prédire les rendements, détecter les stress 
-                    et optimiser les décisions agricoles.
-                </p>
-            </field>
-        </record>
+    <!-- Action pour les tendances climatiques -->
+    <record id="action_tendances_climatiques" model="ir.actions.act_window">
+        <field name="name">Tendances Climatiques</field>
+        <field name="res_model">meteo.data</field>
+        <field name="view_mode">graph,pivot,tree</field>
+        <field name="domain">[('date', '>=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]</field>
+        <field name="context">{'search_default_tendances': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Analysez les tendances climatiques !
+            </p>
+            <p>
+                Visualisez l'évolution des températures, précipitations et autres 
+                paramètres météorologiques sur vos parcelles.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour les prédictions IA -->
-        <record id="action_ia_predictions" model="ir.actions.act_window">
-            <field name="name">Prédictions IA</field>
-            <field name="res_model">ia.prediction</field>
-            <field name="view_mode">tree,form,kanban,graph</field>
-            <field name="view_id" ref="view_ia_prediction_list"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Lancez votre première prédiction IA !
-                </p>
-                <p>
-                    Les prédictions IA fournissent des insights précieux pour la prise de décision 
-                    agricole basée sur les données.
-                </p>
-            </field>
-        </record>
+    <!-- Action pour les alertes météo -->
+    <record id="action_alertes_meteo" model="ir.actions.act_window">
+        <field name="name">Alertes Climatiques</field>
+        <field name="res_model">meteo.data</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="domain">['|', '|', '|', '|', ('alerte_gel', '=', True), ('alerte_canicule', '=', True), ('alerte_secheresse', '=', True), ('alerte_inondation', '=', True), ('alerte_vent', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Surveillez vos alertes climatiques !
+            </p>
+            <p>
+                Consultez les alertes actives : gel, canicule, sécheresse, 
+                inondation et vent fort sur vos parcelles.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour les tableaux de bord principaux -->
-        <record id="action_dashboard_main" model="ir.actions.act_window">
-            <field name="name">Tableaux de Bord Principaux</field>
-            <field name="res_model">dashboard.main</field>
-            <field name="view_mode">tree,form,kanban</field>
-            <field name="view_id" ref="view_dashboard_main"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Créez votre premier tableau de bord principal !
-                </p>
-                <p>
-                    Les tableaux de bord principaux offrent une vue d'ensemble de votre exploitation 
-                    avec des indicateurs clés de performance.
-                </p>
-            </field>
-        </record>
+    <!-- Action pour les modèles IA -->
+    <record id="action_ia_models" model="ir.actions.act_window">
+        <field name="name">Modèles d'Intelligence Artificielle</field>
+        <field name="res_model">ia.model</field>
+        <field name="view_mode">tree,form,kanban,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier modèle d'Intelligence Artificielle !
+            </p>
+            <p>
+                Les modèles IA permettent de prédire les rendements, détecter les stress 
+                et optimiser les décisions agricoles basées sur les données.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour les tableaux de bord météo -->
-        <record id="action_dashboard_meteo" model="ir.actions.act_window">
-            <field name="name">Tableaux de Bord Météorologiques</field>
-            <field name="res_model">dashboard.meteo</field>
-            <field name="view_mode">tree,form,kanban</field>
-            <field name="view_id" ref="view_dashboard_meteo_list"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Créez votre premier tableau de bord météorologique !
-                </p>
-                <p>
-                    Les tableaux de bord météo permettent de suivre les conditions climatiques, 
-                    les prévisions et les alertes en temps réel.
-                </p>
-            </field>
-        </record>
+    <!-- Action pour les prédictions IA -->
+    <record id="action_ia_prediction" model="ir.actions.act_window">
+        <field name="name">Prédictions IA</field>
+        <field name="res_model">ia.prediction</field>
+        <field name="view_mode">tree,form,kanban,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Lancez votre première prédiction IA !
+            </p>
+            <p>
+                Les prédictions IA fournissent des insights précieux pour la prise de décision 
+                agricole : rendements, stress climatique, optimisation des ressources.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour les tableaux de bord agricoles -->
-        <record id="action_dashboard_agricole" model="ir.actions.act_window">
-            <field name="name">Tableaux de Bord Agricoles</field>
-            <field name="res_model">dashboard.agricole</field>
-            <field name="view_mode">tree,form,kanban</field>
-            <field name="view_id" ref="view_dashboard_agricole_list"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Créez votre premier tableau de bord agricole !
-                </p>
-                <p>
-                    Les tableaux de bord agricoles fournissent des insights sur les rendements, 
-                    les ressources et la durabilité de votre exploitation.
-                </p>
-            </field>
-        </record>
+    <!-- Actions pour les scénarios RCP -->
+    <record id="action_rcp_scenarios" model="ir.actions.act_window">
+        <field name="name">Scénarios RCP IPCC</field>
+        <field name="res_model">rcp.scenario</field>
+        <field name="view_mode">tree,form,kanban,graph</field>
+        <field name="view_id" ref="view_rcp_scenario_list"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier scénario RCP IPCC !
+            </p>
+            <p>
+                Les scénarios RCP (Representative Concentration Pathways) permettent de modéliser 
+                l'évolution du climat selon différents niveaux d'émissions de gaz à effet de serre.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour l'historique d'entraînement IA -->
-        <record id="action_ia_historique_entrainement" model="ir.actions.act_window">
-            <field name="name">Historique d'Entraînement IA</field>
-            <field name="res_model">ia.historique.entrainement</field>
-            <field name="view_mode">tree,form,graph</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Aucun historique d'entraînement disponible !
-                </p>
-                <p>
-                    L'historique d'entraînement permet de suivre l'évolution des performances 
-                    de vos modèles IA au fil du temps.
-                </p>
-            </field>
-        </record>
+    <!-- Actions pour les prédictions IA -->
+    <record id="action_ia_predictions" model="ir.actions.act_window">
+        <field name="name">Prédictions IA</field>
+        <field name="res_model">ia.prediction</field>
+        <field name="view_mode">tree,form,kanban,graph</field>
+        <field name="view_id" ref="view_ia_prediction_list"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Lancez votre première prédiction IA !
+            </p>
+            <p>
+                Les prédictions IA fournissent des insights précieux pour la prise de décision 
+                agricole basée sur les données.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour l'historique d'exécution IA -->
-        <record id="action_ia_historique_execution" model="ir.actions.act_window">
-            <field name="name">Historique d'Exécution IA</field>
-            <field name="res_model">ia.historique.execution</field>
-            <field name="view_mode">tree,form,graph</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Aucun historique d'exécution disponible !
-                </p>
-                <p>
-                    L'historique d'exécution permet de suivre les performances et l'utilisation 
-                    des ressources de vos modèles IA.
-                </p>
-            </field>
-        </record>
+    <!-- Actions pour les tableaux de bord principaux -->
+    <record id="action_dashboard_main" model="ir.actions.act_window">
+        <field name="name">Tableaux de Bord Principaux</field>
+        <field name="res_model">dashboard.main</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_id" ref="view_dashboard_main"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier tableau de bord principal !
+            </p>
+            <p>
+                Les tableaux de bord principaux offrent une vue d'ensemble de votre exploitation 
+                avec des indicateurs clés de performance.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour les données annuelles RCP -->
-        <record id="action_rcp_donnees_annuelles" model="ir.actions.act_window">
-            <field name="name">Données Annuelles RCP</field>
-            <field name="res_model">rcp.donnee.annuelle</field>
-            <field name="view_mode">tree,form,graph</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Aucune donnée annuelle RCP disponible !
-                </p>
-                <p>
-                    Les données annuelles RCP fournissent des projections détaillées 
-                    des paramètres climatiques année par année.
-                </p>
-            </field>
-        </record>
+    <!-- Actions pour les tableaux de bord météo -->
+    <record id="action_dashboard_meteo" model="ir.actions.act_window">
+        <field name="name">Tableaux de Bord Météorologiques</field>
+        <field name="res_model">dashboard.meteo</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_id" ref="view_dashboard_meteo_list"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier tableau de bord météorologique !
+            </p>
+            <p>
+                Les tableaux de bord météo permettent de suivre les conditions climatiques, 
+                les prévisions et les alertes en temps réel.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour les rapports de tableau de bord -->
-        <record id="action_dashboard_rapport" model="ir.actions.act_window">
-            <field name="name">Rapports de Tableau de Bord</field>
-            <field name="res_model">dashboard.rapport</field>
-            <field name="view_mode">tree,form</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Aucun rapport de tableau de bord disponible !
-                </p>
-                <p>
-                    Les rapports de tableau de bord permettent de générer des documents 
-                    PDF, Excel ou CSV pour l'analyse et le partage.
-                </p>
-            </field>
-        </record>
+    <!-- Actions pour les tableaux de bord agricoles -->
+    <record id="action_dashboard_agricole" model="ir.actions.act_window">
+        <field name="name">Tableaux de Bord Agricoles</field>
+        <field name="res_model">dashboard.agricole</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_id" ref="view_dashboard_agricole_list"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier tableau de bord agricole !
+            </p>
+            <p>
+                Les tableaux de bord agricoles fournissent des insights sur les rendements, 
+                les ressources et la durabilité de votre exploitation.
+            </p>
+        </field>
+    </record>
 
-        <!-- Actions pour la génération automatique de scénarios RCP -->
-        <record id="action_generer_scenarios_rcp" model="ir.actions.server">
-            <field name="name">Générer Scénarios RCP IPCC</field>
-            <field name="model_id" ref="model_rcp_scenario"/>
-            <field name="state">code</field>
-            <field name="code">
-                # Génération automatique des scénarios RCP IPCC
-                scenarios = model.search([])
-                if not scenarios:
-                    # Créer les scénarios RCP standard
-                    rcp_scenarios = [
-                        {'nom': 'RCP 2.6 - Optimiste', 'description': 'Scénario de stabilisation avec émissions très faibles', 'type_emission': 'faible', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 421, 'augmentation_temperature': 1.0},
-                        {'nom': 'RCP 4.5 - Intermédiaire', 'description': 'Scénario de stabilisation modérée', 'type_emission': 'moderee', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 538, 'augmentation_temperature': 1.8},
-                        {'nom': 'RCP 6.0 - Élevé', 'description': 'Scénario avec émissions élevées', 'type_emission': 'elevee', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 670, 'augmentation_temperature': 2.2},
-                        {'nom': 'RCP 8.5 - Pessimiste', 'description': 'Scénario avec émissions très élevées', 'type_emission': 'tres_elevee', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 936, 'augmentation_temperature': 3.7}
-                    ]
-                    
-                    for rcp_data in rcp_scenarios:
-                        scenario = model.create(rcp_data)
-                        # Générer des données annuelles pour chaque scénario
-                        for annee in range(rcp_data['annee_debut'], rcp_data['annee_fin'] + 1):
-                            facteur_annee = (annee - rcp_data['annee_debut']) / (rcp_data['annee_fin'] - rcp_data['annee_debut'])
-                            temperature = 15 + (rcp_data['augmentation_temperature'] * facteur_annee)
-                            precipitation = 800 + (100 * facteur_annee * (1 if rcp_data['type_emission'] in ['elevee', 'tres_elevee'] else -0.5))
-                            co2 = rcp_data['concentration_co2'] + (facteur_annee * 100)
-                            
-                            model.env['rcp.donnee.annuelle'].create({
-                                'scenario_id': scenario.id,
-                                'annee': annee,
-                                'temperature_moyenne': temperature,
-                                'precipitation_totale': precipitation,
-                                'concentration_co2': co2,
-                                'humidite_relative': 70 - (facteur_annee * 10),
-                                'ensoleillement': 2000 + (facteur_annee * 200),
-                                'vitesse_vent': 15 + (facteur_annee * 5)
-                            })
-                    
-                    action = {
-                        'type': 'ir.actions.client',
-                        'tag': 'display_notification',
-                        'params': {
-                            'title': 'Scénarios RCP générés !',
-                            'message': f'4 scénarios RCP IPCC ont été créés avec leurs données annuelles jusqu\'en 2100.',
-                            'type': 'success',
-                            'sticky': False,
-                        }
+    <!-- Actions pour l'historique d'entraînement IA -->
+    <record id="action_ia_historique_entrainement" model="ir.actions.act_window">
+        <field name="name">Historique d'Entraînement IA</field>
+        <field name="res_model">ia.historique.entrainement</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucun historique d'entraînement disponible !
+            </p>
+            <p>
+                L'historique d'entraînement permet de suivre l'évolution des performances 
+                de vos modèles IA au fil du temps.
+            </p>
+        </field>
+    </record>
+
+    <!-- Actions pour l'historique d'exécution IA -->
+    <record id="action_ia_historique_execution" model="ir.actions.act_window">
+        <field name="name">Historique d'Exécution IA</field>
+        <field name="res_model">ia.historique.execution</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucun historique d'exécution disponible !
+            </p>
+            <p>
+                L'historique d'exécution permet de suivre les performances et l'utilisation 
+                des ressources de vos modèles IA.
+            </p>
+        </field>
+    </record>
+
+    <!-- Actions pour les données annuelles RCP -->
+    <record id="action_rcp_donnees_annuelles" model="ir.actions.act_window">
+        <field name="name">Données Annuelles RCP</field>
+        <field name="res_model">rcp.donnee.annuelle</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune donnée annuelle RCP disponible !
+            </p>
+            <p>
+                Les données annuelles RCP fournissent des projections détaillées 
+                des paramètres climatiques année par année.
+            </p>
+        </field>
+    </record>
+
+    <!-- Actions pour les rapports de tableau de bord -->
+    <record id="action_dashboard_rapport" model="ir.actions.act_window">
+        <field name="name">Rapports de Tableau de Bord</field>
+        <field name="res_model">dashboard.rapport</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucun rapport de tableau de bord disponible !
+            </p>
+            <p>
+                Les rapports de tableau de bord permettent de générer des documents 
+                PDF, Excel ou CSV pour l'analyse et le partage.
+            </p>
+        </field>
+    </record>
+
+    <!-- Actions pour la génération automatique de scénarios RCP -->
+    <record id="action_generer_scenarios_rcp" model="ir.actions.server">
+        <field name="name">Générer Scénarios RCP IPCC</field>
+        <field name="model_id" ref="model_rcp_scenario"/>
+        <field name="state">code</field>
+        <field name="code">
+            # Génération automatique des scénarios RCP IPCC
+            scenarios = model.search([])
+            if not scenarios:
+                # Créer les scénarios RCP standard
+                rcp_scenarios = [
+                    {'nom': 'RCP 2.6 - Optimiste', 'description': 'Scénario de stabilisation avec émissions très faibles', 'type_emission': 'faible', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 421, 'augmentation_temperature': 1.0},
+                    {'nom': 'RCP 4.5 - Intermédiaire', 'description': 'Scénario de stabilisation modérée', 'type_emission': 'moderee', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 538, 'augmentation_temperature': 1.8},
+                    {'nom': 'RCP 6.0 - Élevé', 'description': 'Scénario avec émissions élevées', 'type_emission': 'elevee', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 670, 'augmentation_temperature': 2.2},
+                    {'nom': 'RCP 8.5 - Pessimiste', 'description': 'Scénario avec émissions très élevées', 'type_emission': 'tres_elevee', 'annee_debut': 2020, 'annee_fin': 2100, 'concentration_co2': 936, 'augmentation_temperature': 3.7}
+                ]
+                
+                for rcp_data in rcp_scenarios:
+                    scenario = model.create(rcp_data)
+                    # Générer des données annuelles pour chaque scénario
+                    for annee in range(rcp_data['annee_debut'], rcp_data['annee_fin'] + 1):
+                        facteur_annee = (annee - rcp_data['annee_debut']) / (rcp_data['annee_fin'] - rcp_data['annee_debut'])
+                        temperature = 15 + (rcp_data['augmentation_temperature'] * facteur_annee)
+                        precipitation = 800 + (100 * facteur_annee * (1 if rcp_data['type_emission'] in ['elevee', 'tres_elevee'] else -0.5))
+                        co2 = rcp_data['concentration_co2'] + (facteur_annee * 100)
+                        
+                        model.env['rcp.donnee.annuelle'].create({
+                            'scenario_id': scenario.id,
+                            'annee': annee,
+                            'temperature_moyenne': temperature,
+                            'precipitation_totale': precipitation,
+                            'concentration_co2': co2,
+                            'humidite_relative': 70 - (facteur_annee * 10),
+                            'ensoleillement': 2000 + (facteur_annee * 200),
+                            'vitesse_vent': 15 + (facteur_annee * 5)
+                        })
+                
+                action = {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': 'Scénarios RCP générés !',
+                        'message': f'4 scénarios RCP IPCC ont été créés avec leurs données annuelles jusqu\'en 2100.',
+                        'type': 'success',
+                        'sticky': False,
                     }
-                else:
-                    action = {
-                        'type': 'ir.actions.client',
-                        'tag': 'display_notification',
-                        'params': {
-                            'title': 'Scénarios déjà existants',
-                            'message': f'{len(scenarios)} scénarios RCP sont déjà disponibles.',
-                            'type': 'info',
-                            'sticky': False,
-                        }
+                }
+            else:
+                action = {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': 'Scénarios déjà existants',
+                        'message': f'{len(scenarios)} scénarios RCP sont déjà disponibles.',
+                        'type': 'info',
+                        'sticky': False,
                     }
+                }
                 
                 return action
-            </field>
-        </record>
-    </data>
+        </field>
+    </record>
 </odoo>
