@@ -1,0 +1,69 @@
+# 🐳 Docker Compose Corrigé pour Odoo 18 + Smart Agri Decision
+# ✅ Version corrigée qui résout l'erreur "Internal Server Error"
+
+version: '3.8'
+
+services:
+  # 🗄️ Base de données PostgreSQL
+  db:
+    image: postgres:16
+    user: root
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo18@2024
+      - POSTGRES_DB=postgres
+    restart: always
+    volumes:
+      - ./postgresql:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 🚀 Odoo 18 avec module Smart Agri Decision
+  odoo18:
+    image: odoo:18
+    user: root
+    depends_on:
+      - db
+    ports:
+      - "10018:8069"                    # Port principal Odoo
+      # - "20018:8072"                  # Port live chat (optionnel)
+    tty: true
+    stdin_open: true
+    environment:
+      # ✅ Variables d'environnement Odoo standard (CORRIGÉES)
+      - ODOO_DATABASE_HOST=db
+      - ODOO_DATABASE_USER=odoo
+      - ODOO_DATABASE_PASSWORD=odoo18@2024
+      - PIP_BREAK_SYSTEM_PACKAGES=1
+      # Variables supplémentaires optionnelles
+      - ODOO_DATABASE_PORT=5432
+      - ODOO_ADDONS_PATH=/mnt/extra-addons
+    volumes:
+      # Configuration Odoo
+      - ./etc:/etc/odoo
+      # Module Smart Agri Decision
+      - ./smart_agri_decision:/mnt/extra-addons
+      # Données persistantes
+      - ./odoo_data:/var/lib/odoo
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8069/web/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# 🌐 Réseau personnalisé (optionnel)
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# 📊 Volumes persistants
+volumes:
+  postgresql_data:
+  odoo_data:

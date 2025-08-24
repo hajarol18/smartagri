@@ -37,6 +37,12 @@
 - Docker et Docker Compose (recommandé)
 - PostgreSQL
 
+### ⚠️ Résolution des Problèmes Docker
+
+Si vous rencontrez l'erreur **"Internal Server Error"** lors de l'installation, consultez :
+- [Guide de résolution Docker](DOCKER_ISSUE_RESOLUTION.md) - Solution complète
+- [Docker Compose corrigé](docker-compose-corrected.yml) - Configuration de référence
+
 ### Installation via Docker
 ```bash
 # Cloner le repository
