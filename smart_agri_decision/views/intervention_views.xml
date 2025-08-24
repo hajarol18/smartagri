@@ -1,76 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Vue liste des interventions -->
-    <record id="view_intervention_list" model="ir.ui.view">
-        <field name="name">intervention.agri.list</field>
-        <field name="model">intervention.agri</field>
-        <field name="arch" type="xml">
-            <list string="Interventions">
-                <field name="nom"/>
-                <field name="type_intervention"/>
-                <field name="date_intervention"/>
-                <field name="parcelle_id"/>
-                <field name="exploitation_id"/>
-                <field name="etat"/>
-                <field name="cout_estime"/>
-            </list>
-        </field>
-    </record>
-
-    <!-- Vue formulaire des interventions -->
+    <!-- Vue formulaire pour intervention.agri -->
     <record id="view_intervention_form" model="ir.ui.view">
         <field name="name">intervention.agri.form</field>
         <field name="model">intervention.agri</field>
         <field name="arch" type="xml">
-            <form string="Intervention">
+            <form string="Intervention Agricole">
                 <sheet>
                     <group>
-                        <group>
-                            <field name="nom"/>
+                        <group string="Informations générales">
+                            <field name="name"/>
                             <field name="type_intervention"/>
-                            <field name="date_intervention"/>
-                            <field name="duree_estimee"/>
                             <field name="exploitation_id"/>
+                        </group>
+                        <group string="Localisation">
                             <field name="parcelle_id"/>
+                            <field name="culture_id"/>
                         </group>
-                        <group>
-                            <field name="etat"/>
-                            <field name="priorite"/>
+                    </group>
+                    <group>
+                        <group string="Planification">
+                            <field name="date_deadline"/>
+                            <field name="duree_estimee"/>
                             <field name="cout_estime"/>
-                            <field name="cout_effectif"/>
-                            <field name="description"/>
+                        </group>
+                        <group string="État">
+                            <field name="stage_id"/>
+                            <field name="priority"/>
                         </group>
                     </group>
-                    
-                    <group string="Détails techniques">
-                        <group>
-                            <field name="equipements_utilises"/>
-                            <field name="intrants_ids"/>
-                            <field name="conditions_meteo"/>
-                        </group>
-                        <group>
-                            <field name="description"/>
-                            <field name="observations"/>
-                        </group>
-                    </group>
-                    
                     <notebook>
-                        <page string="Planification">
-                            <group>
-                                <field name="date_planifiee"/>
-                                <field name="date_intervention"/>
-                                <field name="duree_estimee"/>
-                                <field name="duree_effective"/>
-                            </group>
+                        <page string="Intrants utilisés">
+                            <field name="intrants_ids"/>
                         </page>
-                        <page string="Ressources">
-                            <group>
-                                <field name="nombre_personnes"/>
-                                <field name="cout_main_oeuvre"/>
-                                <field name="temperature"/>
-                                <field name="humidite"/>
-                                <field name="vitesse_vent"/>
-                            </group>
+                        <page string="Description">
+                            <field name="description"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -78,14 +42,35 @@
         </field>
     </record>
 
-    <!-- Action pour les interventions -->
+    <!-- Vue liste pour intervention.agri -->
+    <record id="view_intervention_tree" model="ir.ui.view">
+        <field name="name">intervention.agri.tree</field>
+        <field name="model">intervention.agri</field>
+        <field name="arch" type="xml">
+            <tree string="Interventions Agricoles">
+                <field name="name"/>
+                <field name="type_intervention"/>
+                <field name="exploitation_id"/>
+                <field name="parcelle_id"/>
+                <field name="date_deadline"/>
+                <field name="stage_id"/>
+                <field name="priority"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action pour intervention.agri -->
     <record id="action_intervention_agri" model="ir.actions.act_window">
-        <field name="name">Interventions</field>
+        <field name="name">Interventions Agricoles</field>
         <field name="res_model">intervention.agri</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Créez votre première intervention agricole
+                Créez votre première intervention agricole !
+            </p>
+            <p>
+                Les interventions agricoles comprennent toutes les actions nécessaires
+                à la conduite des cultures : semis, irrigation, fertilisation, etc.
             </p>
         </field>
     </record>

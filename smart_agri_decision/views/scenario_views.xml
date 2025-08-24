@@ -1,0 +1,61 @@
+<odoo>
+    <record id="view_scenario_form" model="ir.ui.view">
+        <field name="name">scenario.climatique.form</field>
+        <field name="model">scenario.climatique</field>
+        <field name="arch" type="xml">
+            <form string="Scénario climatique">
+                <sheet>
+                    <group>
+                        <field name="scenario_rcp"/>
+                        <field name="annee"/>
+                        <field name="temperature"/>
+                        <field name="precipitation"/>
+                        <field name="impact_agricole"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_scenario_tree" model="ir.ui.view">
+        <field name="name">scenario.climatique.tree</field>
+        <field name="model">scenario.climatique</field>
+        <field name="arch" type="xml">
+            <tree string="Scénarios climatiques">
+                <field name="scenario_rcp"/>
+                <field name="annee"/>
+                <field name="temperature"/>
+                <field name="precipitation"/>
+                <field name="impact_agricole"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_scenario_graph" model="ir.ui.view">
+        <field name="name">scenario.climatique.graph</field>
+        <field name="model">scenario.climatique</field>
+        <field name="type">graph</field>
+        <field name="arch" type="xml">
+            <graph string="Scénarios RCP" type="line">
+                <field name="annee"/>
+                <field name="temperature" type="measure"/>
+                <field name="scenario_rcp" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_scenario_rcp" model="ir.actions.act_window">
+        <field name="name">Scénarios RCP</field>
+        <field name="res_model">scenario.climatique</field>
+        <field name="view_mode">graph,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier scénario climatique RCP !
+            </p>
+            <p>
+                Les scénarios RCP (Representative Concentration Pathways) permettent de simuler 
+                l'évolution du climat selon différents niveaux d'émissions de gaz à effet de serre.
+            </p>
+        </field>
+    </record>
+</odoo>

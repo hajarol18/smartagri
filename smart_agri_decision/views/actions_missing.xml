@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Actions manquantes pour corriger la structure des menus selon le cahier des charges -->
+        
+        <!-- ======================================== -->
+        <!-- 2.2. INTÉGRATION DES DONNÉES CLIMATIQUES -->
+        <!-- ======================================== -->
+        
+        <!-- Action pour les tendances climatiques (données météo, pas exploitations) -->
+        <record id="action_tendances_climatiques" model="ir.actions.act_window">
+            <field name="name">Tendances Climatiques</field>
+            <field name="res_model">meteo.data</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="domain">[('date', '>=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]</field>
+            <field name="context">{'search_default_tendances': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aucune donnée de tendance climatique disponible !
+                </p>
+                <p>
+                    Analysez l'évolution des conditions météorologiques sur différentes périodes 
+                    pour anticiper les changements climatiques et leurs impacts sur vos cultures.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les alertes météo -->
+        <record id="action_alertes_meteo" model="ir.actions.act_window">
+            <field name="name">Alertes Climatiques</field>
+            <field name="res_model">meteo.data</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|', '|', '|', '|', ('alerte_gel', '=', True), ('alerte_canicule', '=', True), ('alerte_secheresse', '=', True), ('alerte_inondation', '=', True), ('alerte_vent', '=', True)]</field>
+            <field name="context">{'search_default_alertes_actives': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aucune alerte climatique active !
+                </p>
+                <p>
+                    Surveillez les alertes : sécheresse, gel, canicule, inondation, vent fort 
+                    pour protéger vos cultures et optimiser vos interventions.
+                </p>
+            </field>
+        </record>
+
+        <!-- ======================================== -->
+        <!-- 2.1. GESTION DES DONNÉES AGRICOLES -->
+        <!-- ======================================== -->
+        
+        <!-- Action pour la carte interactive des parcelles -->
+        <record id="action_parcelle_agri_map" model="ir.actions.act_window">
+            <field name="name">Carte Interactive des Parcelles</field>
+            <field name="res_model">parcelle.agri</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_parcelle_agri_form"/>
+            <field name="target">new</field>
+            <field name="context">{'default_show_map': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première parcelle avec la carte interactive !
+                </p>
+                <p>
+                    Utilisez la carte Leaflet pour dessiner et définir précisément 
+                    vos parcelles agricoles avec leurs coordonnées géographiques PostGIS.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les cultures agricoles -->
+        <record id="action_culture_agri" model="ir.actions.act_window">
+            <field name="name">Cultures par Saison</field>
+            <field name="res_model">culture.agri</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première culture agricole !
+                </p>
+                <p>
+                    Gérez vos cultures par saison, type et variété pour optimiser 
+                    vos rotations et planifier vos interventions selon le cycle cultural.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les interventions agricoles -->
+        <record id="action_intervention_agri" model="ir.actions.act_window">
+            <field name="name">Interventions Agricoles</field>
+            <field name="res_model">intervention.agri</field>
+            <field name="view_mode">tree,form,kanban,calendar</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Planifiez votre première intervention agricole !
+                </p>
+                <p>
+                    Organisez et suivez toutes vos interventions : semis, traitements, 
+                    récoltes, irrigation et maintenance selon votre planification.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les intrants et ressources -->
+        <record id="action_intrant_agri" model="ir.actions.act_window">
+            <field name="name">Intrants et Ressources</field>
+            <field name="res_model">intrant.agri</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Ajoutez votre premier intrant agricole !
+                </p>
+                <p>
+                    Gérez vos stocks d'intrants : semences, engrais, pesticides, eau 
+                    et suivez leur utilisation et leur coût pour optimiser vos ressources.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les exploitations agricoles -->
+        <record id="action_exploitation_agri" model="ir.actions.act_window">
+            <field name="name">Exploitations Agricoles</field>
+            <field name="res_model">exploitation.agri</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première exploitation agricole !
+                </p>
+                <p>
+                    Définissez vos exploitations avec leurs caractéristiques, 
+                    parcelles et données météorologiques associées.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les parcelles agricoles -->
+        <record id="action_parcelle_agri" model="ir.actions.act_window">
+            <field name="name">Parcelles Cultivées</field>
+            <field name="res_model">parcelle.agri</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première parcelle agricole !
+                </p>
+                <p>
+                    Définissez vos parcelles avec leurs surfaces, types de sol, 
+                    cultures et coordonnées géographiques PostGIS.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les données météo -->
+        <record id="action_meteo_data" model="ir.actions.act_window">
+            <field name="name">Données Météorologiques</field>
+            <field name="res_model">meteo.data</field>
+            <field name="view_mode">tree,form,kanban,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Importez vos premières données météorologiques !
+                </p>
+                <p>
+                    Collectez et analysez les données météo : températures, précipitations, 
+                    humidité, vent et rayonnement solaire pour vos parcelles.
+                </p>
+            </field>
+        </record>
+
+        <!-- ======================================== -->
+        <!-- 2.3. INTELLIGENCE ARTIFICIELLE & AIDE À LA DÉCISION -->
+        <!-- ======================================== -->
+        
+        <!-- Action pour les modèles IA -->
+        <record id="action_ia_models" model="ir.actions.act_window">
+            <field name="name">Modèles d'Intelligence Artificielle</field>
+            <field name="res_model">ia.model</field>
+            <field name="view_mode">tree,form,kanban,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier modèle d'Intelligence Artificielle !
+                </p>
+                <p>
+                    Les modèles IA permettent de prédire les rendements, détecter les stress 
+                    et optimiser les décisions agricoles basées sur les données.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les prédictions IA -->
+        <record id="action_ia_prediction" model="ir.actions.act_window">
+            <field name="name">Prédictions IA</field>
+            <field name="res_model">ia.prediction</field>
+            <field name="view_mode">tree,form,kanban,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Lancez votre première prédiction IA !
+                </p>
+                <p>
+                    Les prédictions IA fournissent des insights précieux pour la prise de décision 
+                    agricole : rendements, stress climatique, optimisation des ressources.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour l'historique d'entraînement IA -->
+        <record id="action_ia_historique_entrainement" model="ir.actions.act_window">
+            <field name="name">Historique d'Entraînement IA</field>
+            <field name="res_model">ia.historique.entrainement</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aucun historique d'entraînement disponible !
+                </p>
+                <p>
+                    L'historique d'entraînement permet de suivre l'évolution des performances 
+                    de vos modèles IA au fil du temps et d'améliorer leur précision.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour l'historique d'exécution IA -->
+        <record id="action_ia_historique_execution" model="ir.actions.act_window">
+            <field name="name">Historique d'Exécution IA</field>
+            <field name="res_model">ia.historique.execution</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aucun historique d'exécution disponible !
+                </p>
+                <p>
+                    L'historique d'exécution permet de suivre les performances et l'utilisation 
+                    des ressources de vos modèles IA pour optimiser leur utilisation.
+                </p>
+            </field>
+        </record>
+
+        <!-- ======================================== -->
+        <!-- 2.4. VISUALISATION & TABLEAUX DE BORD -->
+        <!-- ======================================== -->
+        
+        <!-- Action pour les tableaux de bord principaux -->
+        <record id="action_dashboard_main" model="ir.actions.act_window">
+            <field name="name">Tableaux de Bord Principaux</field>
+            <field name="res_model">dashboard.main</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier tableau de bord principal !
+                </p>
+                <p>
+                    Les tableaux de bord principaux offrent une vue d'ensemble de votre exploitation 
+                    avec des indicateurs clés de performance et de résilience agricole.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les tableaux de bord météo -->
+        <record id="action_dashboard_meteo" model="ir.actions.act_window">
+            <field name="name">Tableaux de Bord Météorologiques</field>
+            <field name="res_model">dashboard.meteo</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier tableau de bord météorologique !
+                </p>
+                <p>
+                    Les tableaux de bord météo permettent de suivre les conditions climatiques, 
+                    les prévisions et les alertes en temps réel pour vos parcelles.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les tableaux de bord agricoles -->
+        <record id="action_dashboard_agricole" model="ir.actions.act_window">
+            <field name="name">Tableaux de Bord Agricoles</field>
+            <field name="res_model">dashboard.agricole</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier tableau de bord agricole !
+                </p>
+                <p>
+                    Les tableaux de bord agricoles fournissent des insights sur les rendements, 
+                    les ressources et la durabilité de votre exploitation.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les rapports de tableau de bord -->
+        <record id="action_dashboard_rapport" model="ir.actions.act_window">
+            <field name="name">Rapports PDF</field>
+            <field name="res_model">dashboard.rapport</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aucun rapport disponible !
+                </p>
+                <p>
+                    Générez des rapports PDF : fiches culture, recommandations IA, alertes 
+                    pour l'analyse et le partage avec vos équipes.
+                </p>
+            </field>
+        </record>
+
+        <!-- ======================================== -->
+        <!-- SCÉNARIOS RCP IPCC (Intégration climatique) -->
+        <!-- ======================================== -->
+        
+        <!-- Action pour les données annuelles RCP -->
+        <record id="action_rcp_donnees_annuelles" model="ir.actions.act_window">
+            <field name="name">Données Annuelles RCP</field>
+            <field name="res_model">rcp.donnee.annuelle</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aucune donnée annuelle RCP disponible !
+                </p>
+                <p>
+                    Les données annuelles RCP fournissent des projections détaillées 
+                    des paramètres climatiques année par année selon les scénarios IPCC.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour les scénarios RCP -->
+        <record id="action_rcp_scenarios" model="ir.actions.act_window">
+            <field name="name">Scénarios RCP IPCC</field>
+            <field name="res_model">rcp.scenario</field>
+            <field name="view_mode">tree,form,kanban,graph</field>
+            <field name="view_id" ref="view_rcp_scenario_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier scénario RCP IPCC !
+                </p>
+                <p>
+                    Les scénarios RCP (Representative Concentration Pathways) permettent de modéliser 
+                    l'évolution du climat selon différents niveaux d'émissions de gaz à effet de serre.
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour l'analyse RCP -->
+        <record id="action_rcp_analysis" model="ir.actions.act_window">
+            <field name="name">Analyse des Scénarios RCP</field>
+            <field name="res_model">rcp.scenario</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_rcp_scenario_list"/>
+            <field name="domain">[('state', '=', 'active')]</field>
+            <field name="context">{'search_default_actifs': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Analysez l'impact des scénarios climatiques sur vos exploitations
+                </p>
+            </field>
+        </record>
+
+        <!-- Action pour la génération automatique de scénarios RCP -->
+        <record id="action_generer_scenarios_rcp" model="ir.actions.server">
+            <field name="name">Générer Scénarios RCP IPCC</field>
+            <field name="model_id" ref="model_rcp_scenario"/>
+            <field name="state">code</field>
+            <field name="code">
+                # Génération automatique des scénarios RCP IPCC
+                scenarios = model.search([])
+                if not scenarios:
+                    # Créer les scénarios RCP standard
+                    rcp_scenarios = [
+                        {'name': 'RCP 2.6 - Optimiste', 'description': 'Scénario de stabilisation avec émissions très faibles', 'rcp_type': 'rcp_26', 'annee_debut': 2020, 'annee_fin': 2100, 'temperature_rise': 1.0, 'co2_concentration': 421, 'precipitation_change': -5, 'stress_hydrique_rcp': 0.1, 'stress_thermique_rcp': 0.05, 'rendement_change': -2.5},
+                        {'name': 'RCP 4.5 - Intermédiaire', 'description': 'Scénario de stabilisation modérée', 'rcp_type': 'rcp_45', 'annee_debut': 2020, 'annee_fin': 2100, 'temperature_rise': 1.8, 'co2_concentration': 538, 'precipitation_change': -8, 'stress_hydrique_rcp': 0.15, 'stress_thermique_rcp': 0.12, 'rendement_change': -5.0},
+                        {'name': 'RCP 6.0 - Élevé', 'description': 'Scénario avec émissions élevées', 'rcp_type': 'rcp_60', 'annee_debut': 2020, 'annee_fin': 2100, 'temperature_rise': 2.2, 'co2_concentration': 670, 'precipitation_change': -12, 'stress_hydrique_rcp': 0.25, 'stress_thermique_rcp': 0.20, 'rendement_change': -8.5},
+                        {'name': 'RCP 8.5 - Pessimiste', 'description': 'Scénario avec émissions très élevées', 'rcp_type': 'rcp_85', 'annee_debut': 2020, 'annee_fin': 2100, 'temperature_rise': 3.7, 'co2_concentration': 936, 'precipitation_change': -20, 'stress_hydrique_rcp': 0.40, 'stress_thermique_rcp': 0.35, 'rendement_change': -15.0}
+                    ]
+                    
+                    for rcp_data in rcp_scenarios:
+                        scenario = model.create(rcp_data)
+                        # Générer des données annuelles pour chaque scénario
+                        scenario.generer_donnees_annuelles()
+                    
+                    action = {
+                        'type': 'ir.actions.client',
+                        'tag': 'display_notification',
+                        'params': {
+                            'title': 'Scénarios RCP générés !',
+                            'message': f'4 scénarios RCP IPCC ont été créés avec leurs données annuelles jusqu\'en 2100.',
+                            'type': 'success',
+                            'sticky': False,
+                        }
+                    }
+                else:
+                    action = {
+                        'type': 'ir.actions.client',
+                        'tag': 'display_notification',
+                        'params': {
+                            'title': 'Scénarios déjà existants',
+                            'message': f'{len(scenarios)} scénarios RCP sont déjà disponibles.',
+                            'type': 'info',
+                            'sticky': False,
+                        }
+                    }
+                
+                return action
+            </field>
+        </record>
+    </data>
+</odoo>

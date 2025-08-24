@@ -240,10 +240,13 @@ class DashboardMeteo(models.Model):
     
     def _verifier_alertes(self):
         """Vérifie et met à jour les alertes météo"""
-        # Compter les alertes actives
+        # Compter les alertes actives avec un domaine correctement formé
         alertes = self.env['meteo.data'].search([
             ('exploitation_id', '=', self.exploitation_id.id),
-            '|', '|', '|', '|',
+            '|',
+            '|',
+            '|',
+            '|',
             ('alerte_gel', '=', True),
             ('alerte_canicule', '=', True),
             ('alerte_secheresse', '=', True),

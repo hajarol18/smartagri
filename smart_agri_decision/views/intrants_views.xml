@@ -1,85 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Vue liste des intrants -->
-    <record id="view_intrant_list" model="ir.ui.view">
-        <field name="name">intrant.agri.list</field>
-        <field name="model">intrant.agri</field>
-        <field name="arch" type="xml">
-            <list string="Intrants">
-                <field name="nom"/>
-                <field name="type_intrant"/>
-                <field name="categorie"/>
-                <field name="stock_disponible"/>
-                <field name="unite"/>
-                <field name="date_peremption"/>
-                <field name="fournisseur"/>
-            </list>
-        </field>
-    </record>
-
-    <!-- Vue formulaire des intrants -->
+    <!-- Vue formulaire pour intrant.agri -->
     <record id="view_intrant_form" model="ir.ui.view">
         <field name="name">intrant.agri.form</field>
         <field name="model">intrant.agri</field>
         <field name="arch" type="xml">
-            <form string="Intrant">
+            <form string="Intrant Agricole">
                 <sheet>
                     <group>
-                        <group>
-                            <field name="nom"/>
+                        <group string="Informations générales">
+                            <field name="name"/>
                             <field name="type_intrant"/>
-                            <field name="categorie"/>
-                            <field name="specifications"/>
                             <field name="exploitation_id"/>
                         </group>
-                        <group>
-                            <field name="stock_disponible"/>
-                            <field name="unite"/>
-                            <field name="prix_unitaire"/>
-                            <field name="fournisseur"/>
-                        </group>
-                    </group>
-                    
-                    <group string="Gestion des stocks">
-                        <group>
+                        <group string="Stock">
                             <field name="stock_minimum"/>
-                            <field name="date_peremption"/>
-                            <field name="localisation_stock"/>
-                        </group>
-                        <group>
-                            <field name="date_achat"/>
-                            <field name="numero_lot"/>
-                            <field name="qualite"/>
+                            <field name="qty_available" readonly="1"/>
                         </group>
                     </group>
-                    
-                    <notebook>
-                        <page string="Utilisation">
-                            <group>
-                                <field name="specifications"/>
-                                <field name="notes"/>
-                            </group>
-                        </page>
-                        <page string="Impact environnemental">
-                            <group>
-                                <field name="impact_environnemental"/>
-                                <field name="notes"/>
-                            </group>
-                        </page>
-                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <!-- Action pour les intrants -->
+    <!-- Vue liste pour intrant.agri -->
+    <record id="view_intrant_tree" model="ir.ui.view">
+        <field name="name">intrant.agri.tree</field>
+        <field name="model">intrant.agri</field>
+        <field name="arch" type="xml">
+            <tree string="Intrants Agricoles">
+                <field name="name"/>
+                <field name="type_intrant"/>
+                <field name="exploitation_id"/>
+                <field name="stock_minimum"/>
+                <field name="qty_available"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action pour intrant.agri -->
     <record id="action_intrant_agri" model="ir.actions.act_window">
-        <field name="name">Intrants</field>
+        <field name="name">Intrants Agricoles</field>
         <field name="res_model">intrant.agri</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Créez votre premier intrant
+                Créez votre premier intrant agricole !
+            </p>
+            <p>
+                Les intrants agricoles comprennent les semences, engrais, pesticides
+                et autres ressources nécessaires à la production agricole.
             </p>
         </field>
     </record>
